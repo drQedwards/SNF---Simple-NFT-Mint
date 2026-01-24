@@ -60,3 +60,4 @@
 .aqua-backdrop-59 { background: rgba(0, 191, 255, 0.06); border-radius: 29px; }
 .sky-shade-60 { background: hsl(200, 70%, 60%); }
 .azure-glow-61 { box-shadow: 0 0 61px rgba(135, 206, 235, 0.8); }
+.cloud-blur-62 { backdrop-filter: blur(62px) brightness(1.2); }
