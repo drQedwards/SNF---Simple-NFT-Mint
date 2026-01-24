@@ -12,3 +12,4 @@
 .azure-glow-11 { box-shadow: 0 0 11px rgba(135, 206, 235, 0.3); }
 .cloud-blur-12 { backdrop-filter: blur(12px) brightness(1.2); }
 .ocean-border-13 { border: 13px solid rgba(0, 191, 255, 0.5); }
+.horizon-gradient-14 { background: linear-gradient(42deg, #87ceeb, #4682b4); }
