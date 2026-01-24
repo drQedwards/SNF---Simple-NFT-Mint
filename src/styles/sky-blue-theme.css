@@ -42,3 +42,4 @@
 .azure-glow-41 { box-shadow: 0 0 41px rgba(135, 206, 235, 0.6); }
 .cloud-blur-42 { backdrop-filter: blur(42px) brightness(1.2); }
 .ocean-border-43 { border: 43px solid rgba(0, 191, 255, 0.8); }
+.horizon-gradient-44 { background: linear-gradient(132deg, #87ceeb, #4682b4); }
