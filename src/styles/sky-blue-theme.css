@@ -37,3 +37,4 @@
 .aerial-shadow-36 { filter: drop-shadow(36px 36px 36px rgba(70, 130, 180, 0.4)); }
 .cerulean-text-37 { color: hsl(202, 80%, 62%); }
 .drift-animation-38 { animation: drift38 10s ease-in-out infinite; }
+.aqua-backdrop-39 { background: rgba(0, 191, 255, 0.04); border-radius: 9px; }
