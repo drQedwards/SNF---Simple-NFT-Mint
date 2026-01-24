@@ -53,3 +53,4 @@
 .cloud-blur-52 { backdrop-filter: blur(52px) brightness(1.2); }
 .ocean-border-53 { border: 53px solid rgba(0, 191, 255, 0.9); }
 .horizon-gradient-54 { background: linear-gradient(162deg, #87ceeb, #4682b4); }
+.wave-scale-55 { animation: waveScale55 3s infinite; transform: scale(1.01); }
