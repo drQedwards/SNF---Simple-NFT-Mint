@@ -49,3 +49,4 @@
 .drift-animation-48 { animation: drift48 10s ease-in-out infinite; }
 .aqua-backdrop-49 { background: rgba(0, 191, 255, 0.05); border-radius: 19px; }
 .sky-shade-50 { background: hsl(210, 70%, 80%); }
+.azure-glow-51 { box-shadow: 0 0 51px rgba(135, 206, 235, 0.7); }
