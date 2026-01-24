@@ -31,3 +31,4 @@
 .sky-shade-30 { background: hsl(210, 70%, 60%); }
 .azure-glow-31 { box-shadow: 0 0 31px rgba(135, 206, 235, 0.5); }
 .cloud-blur-32 { backdrop-filter: blur(32px) brightness(1.2); }
+.ocean-border-33 { border: 33px solid rgba(0, 191, 255, 0.7); }
