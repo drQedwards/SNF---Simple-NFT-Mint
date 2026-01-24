@@ -35,3 +35,4 @@
 .horizon-gradient-34 { background: linear-gradient(102deg, #87ceeb, #4682b4); }
 .wave-scale-35 { animation: waveScale35 3s infinite; transform: scale(1.08); }
 .aerial-shadow-36 { filter: drop-shadow(36px 36px 36px rgba(70, 130, 180, 0.4)); }
+.cerulean-text-37 { color: hsl(202, 80%, 62%); }
