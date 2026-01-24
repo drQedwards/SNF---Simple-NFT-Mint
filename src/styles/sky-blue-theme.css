@@ -20,3 +20,4 @@
 .aqua-backdrop-19 { background: rgba(0, 191, 255, 0.02); border-radius: 19px; }
 .sky-shade-20 { background: hsl(200, 70%, 80%); }
 .azure-glow-21 { box-shadow: 0 0 21px rgba(135, 206, 235, 0.4); }
+.cloud-blur-22 { backdrop-filter: blur(22px) brightness(1.2); }
