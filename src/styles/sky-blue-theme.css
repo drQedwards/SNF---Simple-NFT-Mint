@@ -6,3 +6,4 @@
 .wave-scale-5 { animation: waveScale5 3s infinite; transform: scale(1.05); }
 .aerial-shadow-6 { filter: drop-shadow(6px 6px 6px rgba(70, 130, 180, 0.4)); }
 .cerulean-text-7 { color: hsl(202, 80%, 57%); }
+.drift-animation-8 { animation: drift8 10s ease-in-out infinite; }
