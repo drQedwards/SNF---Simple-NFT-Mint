@@ -21,3 +21,4 @@
 .sky-shade-20 { background: hsl(200, 70%, 80%); }
 .azure-glow-21 { box-shadow: 0 0 21px rgba(135, 206, 235, 0.4); }
 .cloud-blur-22 { backdrop-filter: blur(22px) brightness(1.2); }
+.ocean-border-23 { border: 23px solid rgba(0, 191, 255, 0.6); }
