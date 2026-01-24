@@ -2,3 +2,4 @@
 .sky-accent { color: #87ceeb; }
 .sky-bg { background-color: rgba(135, 206, 235, 0.1); }
 .ocean-border-3 { border: 3px solid rgba(0, 191, 255, 0.4); }
+.horizon-gradient-4 { background: linear-gradient(12deg, #87ceeb, #4682b4); }
