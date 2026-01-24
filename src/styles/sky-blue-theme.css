@@ -13,3 +13,4 @@
 .cloud-blur-12 { backdrop-filter: blur(12px) brightness(1.2); }
 .ocean-border-13 { border: 13px solid rgba(0, 191, 255, 0.5); }
 .horizon-gradient-14 { background: linear-gradient(42deg, #87ceeb, #4682b4); }
+.wave-scale-15 { animation: waveScale15 3s infinite; transform: scale(1.06); }
