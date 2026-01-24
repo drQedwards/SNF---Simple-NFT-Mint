@@ -17,3 +17,4 @@
 .aerial-shadow-16 { filter: drop-shadow(16px 16px 16px rgba(70, 130, 180, 0.4)); }
 .cerulean-text-17 { color: hsl(197, 80%, 67%); }
 .drift-animation-18 { animation: drift18 10s ease-in-out infinite; }
+.aqua-backdrop-19 { background: rgba(0, 191, 255, 0.02); border-radius: 19px; }
