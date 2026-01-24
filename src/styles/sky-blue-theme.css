@@ -19,3 +19,4 @@
 .drift-animation-18 { animation: drift18 10s ease-in-out infinite; }
 .aqua-backdrop-19 { background: rgba(0, 191, 255, 0.02); border-radius: 19px; }
 .sky-shade-20 { background: hsl(200, 70%, 80%); }
+.azure-glow-21 { box-shadow: 0 0 21px rgba(135, 206, 235, 0.4); }
