@@ -64,3 +64,4 @@
 .ocean-border-63 { border: 63px solid rgba(0, 191, 255, 0.1); }
 .horizon-gradient-64 { background: linear-gradient(192deg, #87ceeb, #4682b4); }
 .wave-scale-65 { animation: waveScale65 3s infinite; transform: scale(1.02); }
+.aerial-shadow-66 { filter: drop-shadow(66px 66px 66px rgba(70, 130, 180, 0.4)); }
