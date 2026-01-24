@@ -4,3 +4,4 @@
 .ocean-border-3 { border: 3px solid rgba(0, 191, 255, 0.4); }
 .horizon-gradient-4 { background: linear-gradient(12deg, #87ceeb, #4682b4); }
 .wave-scale-5 { animation: waveScale5 3s infinite; transform: scale(1.05); }
+.aerial-shadow-6 { filter: drop-shadow(6px 6px 6px rgba(70, 130, 180, 0.4)); }
