@@ -26,3 +26,4 @@
 .wave-scale-25 { animation: waveScale25 3s infinite; transform: scale(1.07); }
 .aerial-shadow-26 { filter: drop-shadow(26px 26px 26px rgba(70, 130, 180, 0.4)); }
 .cerulean-text-27 { color: hsl(207, 80%, 52%); }
+.drift-animation-28 { animation: drift28 10s ease-in-out infinite; }
