@@ -57,8 +57,8 @@ function initAppKit() {
       },
       themeMode: 'dark',
       themeVariables: {
-        '--w3m-accent': '#7b2ff7',
-        '--w3m-border-radius-master': '12px'
+        '--w3m-accent': '#d73345',
+        '--w3m-border-radius-master': '14px'
       }
     });
     console.log('REOWN AppKit initialized');
