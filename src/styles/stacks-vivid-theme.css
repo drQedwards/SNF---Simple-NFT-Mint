@@ -1,8 +1,8 @@
 :root,
 :root[data-theme='solar'] {
-  --theme-tune-step: 33;
-  --theme-hue-shift: 3deg;
-  --surface-blur: 13px;
+  --theme-tune-step: 34;
+  --theme-hue-shift: 14deg;
+  --surface-blur: 14px;
   --bg-start: #071726;
   --bg-mid: #10253e;
   --bg-end: #21142f;
@@ -21,9 +21,9 @@
 }
 
 :root[data-theme='aurora'] {
-  --theme-tune-step: 33;
-  --theme-hue-shift: 3deg;
-  --surface-blur: 13px;
+  --theme-tune-step: 34;
+  --theme-hue-shift: 14deg;
+  --surface-blur: 14px;
   --bg-start: #24074e;
   --bg-mid: #00385a;
   --bg-end: #0e4327;
