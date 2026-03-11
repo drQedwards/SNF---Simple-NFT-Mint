@@ -21,7 +21,7 @@ const __dirname = dirname(__filename);
 const CONFIG = {
   NETWORK: process.env.NETWORK || 'mainnet',
   CONTRACT_NAME: 'simple-nft',
-  MNEMONIC: process.env.STACKS_MNEMONIC || 'soap when truly spring audit wait country smooth essence cradle chuckle twenty'
+  MNEMONIC: process.env.STACKS_MNEMONIC
 };
 
 function getNetwork() {
@@ -41,6 +41,11 @@ async function getAccountNonce(address) {
 async function main() {
   console.log('=== Simple NFT Contract Deployment ===\n');
   console.log(`Network: ${CONFIG.NETWORK}`);
+
+  if (!CONFIG.MNEMONIC) {
+    console.error('Missing STACKS_MNEMONIC environment variable.');
+    process.exit(1);
+  }
   
   // Generate wallet from mnemonic
   const wallet = await generateWallet({
