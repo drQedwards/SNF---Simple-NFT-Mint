@@ -1,5 +1,8 @@
 :root,
 :root[data-theme='solar'] {
+  --theme-tune-step: 0;
+  --theme-hue-shift: 0deg;
+  --surface-blur: 12px;
   --bg-start: #071726;
   --bg-mid: #10253e;
   --bg-end: #21142f;
@@ -18,6 +21,9 @@
 }
 
 :root[data-theme='aurora'] {
+  --theme-tune-step: 0;
+  --theme-hue-shift: 0deg;
+  --surface-blur: 12px;
   --bg-start: #24074e;
   --bg-mid: #00385a;
   --bg-end: #0e4327;
@@ -64,7 +70,7 @@ body {
     radial-gradient(circle at 20% 40%, color-mix(in oklab, var(--accent-1), transparent 72%), transparent 62%),
     radial-gradient(circle at 75% 30%, color-mix(in oklab, var(--accent-2), transparent 74%), transparent 58%),
     radial-gradient(circle at 55% 80%, color-mix(in oklab, var(--accent-3), transparent 72%), transparent 54%);
-  filter: blur(48px);
+  filter: blur(48px) hue-rotate(var(--theme-hue-shift));
   opacity: 0.85;
   animation: drift 16s ease-in-out infinite alternate;
 }
@@ -165,7 +171,7 @@ h1 {
   background: var(--surface-strong);
   border: 1px solid var(--line);
   border-radius: 18px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--surface-blur));
   box-shadow: var(--card-shadow);
 }
 
