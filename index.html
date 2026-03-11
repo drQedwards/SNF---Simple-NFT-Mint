@@ -1,485 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <meta name="talentapp:project_verification" content="4cd9f153da667786a2d11e4990b2385a4dd51766c0a98f1c95b5ce4721e919ecdafbaa8216688a1979079aa83940c50dd5bd633de49373907019459e6953d08a">
-  <title>Simple NFT Marketplace</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Simple NFT Marketplace</title>
+  </head>
+  <body>
+    <div class="aurora-wrap"></div>
+    <main class="container">
+      <header class="hero reveal">
+        <div>
+          <p class="kicker">Stacks Mainnet</p>
+          <h1>Simple NFT Marketplace</h1>
+          <p class="subtitle">Mint, list, and track NFT activity with a vivid Stacks dashboard.</p>
+        </div>
+        <button id="theme-toggle" class="btn btn-secondary" type="button">Switch Theme</button>
+      </header>
 
-    :root {
-      --oxen-base-1: #1a0709;
-      --oxen-base-2: #3b0b10;
-      --oxen-base-3: #601019;
-      --oxen-surface-1: #7a1b26;
-      --oxen-accent-1: #ff6b76;
-      --oxen-accent-2: #d73345;
-      --oxen-text-main: #ffe9eb;
-      --oxen-text-muted: #f4b8bf;
-      --oxen-highlight: #ff9aa4;
-    }
-    
-    body {
-      font-family: 'Merriweather', 'Georgia', serif;
-      background: radial-gradient(circle at top, #7a1b26 0%, transparent 45%), linear-gradient(145deg, var(--oxen-base-1) 0%, var(--oxen-base-2) 45%, var(--oxen-base-3) 100%);
-      min-height: 100vh;
-      color: var(--oxen-text-main);
-      position: relative;
-      overflow-x: hidden;
-    }
+      <section class="metrics reveal" aria-label="Marketplace stats">
+        <article class="metric-card">
+          <p class="metric-label">Total Minted</p>
+          <p id="minted" class="metric-value">0</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-label">Owned by You</p>
+          <p id="listed" class="metric-value">0</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-label">STX Spot (USD)</p>
+          <p id="stx-price" class="metric-value">--</p>
+          <p id="stx-price-updated" class="metric-meta">Awaiting quote</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-label">Network</p>
+          <p id="network-status" class="metric-value">Checking</p>
+          <p id="network-height" class="metric-meta">Tip: --</p>
+        </article>
+      </section>
 
-    /* Wood-grain animated background overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(215, 51, 69, 0.2) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(122, 27, 38, 0.18) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(106, 68, 39, 0.12) 0%, transparent 60%);
-      animation: emberFloat 20s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
+      <section class="progress-card reveal" aria-label="Mint progress">
+        <div class="progress-head">
+          <h2>Mint Tracker</h2>
+          <p id="mint-progress-label">0 / 10,000 minted</p>
+        </div>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="10000" aria-valuenow="0">
+          <span id="mint-progress-fill"></span>
+        </div>
+      </section>
 
-    /* Secondary wave animation */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 200%;
-      background: 
-        radial-gradient(ellipse at 30% 20%, rgba(108, 18, 29, 0.16) 0%, transparent 40%),
-        radial-gradient(ellipse at 70% 80%, rgba(215, 51, 69, 0.1) 0%, transparent 45%);
-      animation: emberDrift 30s linear infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
+      <section class="controls reveal">
+        <button id="refresh-btn" class="btn btn-primary" type="button">Refresh Dashboard</button>
+        <label class="auto-refresh">
+          <input id="auto-refresh" type="checkbox" checked />
+          Auto refresh every 30s
+        </label>
+      </section>
 
-    @keyframes emberFloat {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.8;
-      }
-      25% {
-        transform: translate(2%, -3%) scale(1.03);
-        opacity: 0.9;
-      }
-      50% {
-        transform: translate(-2%, 2%) scale(0.97);
-        opacity: 1;
-      }
-      75% {
-        transform: translate(1%, -1%) scale(1.02);
-        opacity: 0.85;
-      }
-    }
+      <section class="panel reveal" id="not-connected">
+        <h2>Connect your wallet</h2>
+        <p>Use Leather or Xverse to mint and list NFTs on Stacks.</p>
+        <button id="connect-btn" class="btn btn-primary" type="button">Connect Wallet</button>
+      </section>
 
-    @keyframes emberDrift {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-      100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-      }
-    }
+      <section class="panel reveal hidden" id="connected">
+        <div class="wallet-row">
+          <div>
+            <p class="wallet-label">Connected wallet</p>
+            <p id="wallet-address" class="wallet-address">SP123...xyz</p>
+          </div>
+          <div class="wallet-actions">
+            <button id="copy-address-btn" class="btn btn-secondary" type="button">Copy</button>
+            <button id="disconnect-btn" class="btn btn-secondary" type="button">Disconnect</button>
+          </div>
+        </div>
 
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
+        <div class="mint-zone">
+          <h2>Mint NFT</h2>
+          <p class="price-chip">Mint price: 0.001 STX</p>
+          <button id="mint-btn" class="btn btn-primary" type="button">Mint NFT</button>
+        </div>
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 26px rgba(215, 51, 69, 0.30); }
-      50% { box-shadow: 0 0 48px rgba(215, 51, 69, 0.42), 0 0 74px rgba(122, 27, 38, 0.30); }
-    }
+        <div class="list-config">
+          <label for="default-list-price">Default list price (STX)</label>
+          <input id="default-list-price" type="number" min="0.0014" step="0.0001" value="0.01" />
+          <small>This value is used when you click "List for Sale" on any NFT.</small>
+        </div>
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
+        <div id="status" class="status hidden" role="status" aria-live="polite"></div>
 
-    @keyframes glow {
-      0%, 100% { filter: drop-shadow(0 0 8px rgba(215, 51, 69, 0.42)); }
-      50% { filter: drop-shadow(0 0 20px rgba(255, 154, 164, 0.74)); }
-    }
-    
-    .container {
-      max-width: 1260px;
-      margin: 0 auto;
-      padding: 1.75rem;
-      position: relative;
-      z-index: 1;
-    }
-    
-    header {
-      text-align: center;
-      margin-bottom: 2.4rem;
-      animation: float 5s ease-in-out infinite;
-    }
-    
-    h1 {
-      font-size: 2.5rem;
-      background: linear-gradient(90deg, #ffd7dc, var(--oxen-accent-1), var(--oxen-accent-2), #ffb3bb);
-      background-size: 300% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 6px 24px rgba(122, 27, 38, 0.45);
-      animation: shimmer 4s linear infinite;
-    }
-    
-    .subtitle {
-      color: #ffd6db;
-      font-size: 1.1rem;
-    }
-    
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 2.25rem;
-      margin: 2rem 0;
-    }
-    
-    .stat {
-      text-align: center;
-      background: rgba(93, 20, 31, 0.42);
-      padding: 1.5rem 2.5rem;
-      border-radius: 15px;
-      border: 1px solid rgba(255, 107, 118, 0.40);
-      backdrop-filter: blur(12px);
-      animation: pulse 4s ease-in-out infinite;
-      transition: transform 0.3s ease;
-    }
+        <div class="nft-head">
+          <h3>Your NFTs</h3>
+          <input id="nft-filter" type="text" placeholder="Filter by token id" />
+        </div>
+        <div id="nft-list" class="nft-grid">
+          <p class="no-nfts">No NFTs yet. Mint one.</p>
+        </div>
+      </section>
 
-    .stat:hover {
-      transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 18px 38px rgba(122, 27, 38, 0.38);
-    }
-    
-    .stat-value {
-      font-size: 2.15rem;
-      font-weight: bold;
-      color: #ffc7ce;
-      text-shadow: 0 0 22px rgba(215, 51, 69, 0.35);
-    }
-    
-    .stat-label {
-      color: var(--oxen-text-muted);
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-    
-    .card {
-      background: rgba(56, 12, 18, 0.84);
-      border-radius: 20px;
-      padding: 2rem;
-      border: 1px solid rgba(255, 107, 118, 0.32);
-      margin-bottom: 2rem;
-      box-shadow: 0 24px 60px rgba(19, 5, 8, 0.52);
-      backdrop-filter: blur(10px);
-      animation: pulse 5s ease-in-out infinite;
-    }
-    
-    .btn {
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 650;
-      letter-spacing: 0.02em;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(90deg, #8f1f2d, var(--oxen-accent-2), var(--oxen-accent-1));
-      background-size: 200% 100%;
-      color: var(--oxen-base-1);
-      animation: shimmer 3s linear infinite;
-    }
+      <section class="panel reveal">
+        <div class="activity-head">
+          <h3>Recent Activity</h3>
+          <small>Stored in your browser</small>
+        </div>
+        <ul id="activity-feed" class="activity-feed">
+          <li class="activity-empty">No activity yet.</li>
+        </ul>
+      </section>
 
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 36px rgba(215, 51, 69, 0.50);
-    }
-    
-    .btn-secondary {
-      background: rgba(93, 20, 31, 0.58);
-      color: var(--oxen-text-muted);
-      border: 1px solid rgba(255, 107, 118, 0.50);
-    }
-    
-    .btn-secondary:hover {
-      background: rgba(122, 27, 38, 0.76);
-      box-shadow: 0 0 22px rgba(255, 107, 118, 0.36);
-    }
-    
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .wallet-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    
-    .wallet-address {
-      font-family: monospace;
-      background: rgba(93, 20, 31, 0.65);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      border: 1px solid rgba(255, 107, 118, 0.45);
-    }
-    
-    .status {
-      padding: 1rem;
-      border-radius: 10px;
-      margin-top: 1rem;
-      text-align: center;
-    }
-    
-    .status.info {
-      background: rgba(122, 27, 38, 0.55);
-      border: 1px solid rgba(255, 107, 118, 0.56);
-    }
-    
-    .status.success {
-      background: rgba(36, 129, 85, 0.26);
-      border: 1px solid rgba(58, 210, 132, 0.56);
-    }
-    
-    .status.error {
-      background: rgba(170, 28, 49, 0.50);
-      border: 1px solid rgba(255, 117, 132, 0.58);
-    }
-    
-    .status a {
-      color: #ffc3ca;
-      text-decoration: underline;
-    }
-    
-    .hidden {
-      display: none !important;
-    }
-    
-    .mint-section {
-      text-align: center;
-      padding: 2rem 0;
-    }
-    
-    .mint-price {
-      font-size: 1.5rem;
-      color: #ffb3bb;
-      margin-bottom: 1rem;
-      animation: glow 3s ease-in-out infinite;
-      text-shadow: 0 0 24px rgba(215, 51, 69, 0.42);
-    }
-    
-    .nft-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    
-    .nft-card {
-      background: rgba(93, 20, 31, 0.42);
-      border-radius: 15px;
-      padding: 1.5rem;
-      text-align: center;
-      border: 1px solid rgba(255, 107, 118, 0.30);
-      transition: all 0.3s ease;
-      animation: float 5s ease-in-out infinite;
-    }
-    
-    .nft-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 18px 48px rgba(215, 51, 69, 0.48);
-      border-color: rgba(255, 154, 164, 0.72);
-    }
-    
-    .nft-image {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      animation: glow 4s ease-in-out infinite;
-      text-shadow: 0 0 20px rgba(255, 154, 164, 0.50);
-    }
-    
-    .nft-id {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #ff909c;
-      display: block;
-      letter-spacing: 0.03em;
-      margin-bottom: 1rem;
-    }
-    
-    .list-nft-btn {
-      width: 100%;
-      padding: 0.8rem;
-      background: linear-gradient(90deg, #8a1d2a, var(--oxen-accent-2), var(--oxen-accent-1));
-      color: var(--oxen-base-1);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .list-nft-btn:hover {
-      box-shadow: 0 5px 20px rgba(215, 51, 69, 0.4);
-      transform: translateY(-2px);
-    }
-    
-    .no-nfts {
-      text-align: center;
-      color: var(--oxen-text-muted);
-      padding: 2rem;
-    }
-    
-    .fee-info {
-      background: rgba(56, 12, 18, 0.78);
-      padding: 1rem;
-      border-radius: 10px;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      color: var(--oxen-text-muted);
-      border: 1px solid rgba(255, 107, 118, 0.34);
-    }
-    
-    .fee-info h4 {
-      color: var(--oxen-accent-1);
-      margin-bottom: 0.5rem;
-    }
-    
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #ff8d98;
-      font-size: 0.9rem;
-    }
-    
-    footer a {
-      color: var(--oxen-accent-1);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
+      <section class="panel reveal fee-card">
+        <h3>Marketplace Fees</h3>
+        <p>Listing fee: 0.0013 STX</p>
+        <p>Sell fee: 0.0013 STX (deducted from sale proceeds)</p>
+        <p>Buy fee: 0.0013 STX (added to purchase amount)</p>
+      </section>
 
-    footer a:hover {
-      color: #ffdbe0;
-      text-shadow: 0 0 14px rgba(255, 154, 164, 0.60);
-    }
-    
-    @media (max-width: 768px) {
-      .stats {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .wallet-info {
-        justify-content: center;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Simple NFT Marketplace</h1>
-      <p class="subtitle">Mint, list, and trade NFTs on Stacks blockchain</p>
-    </header>
-    
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-value" id="minted">0</div>
-        <div class="stat-label">NFTs Minted</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="listed">0</div>
-        <div class="stat-label">Listed for Sale</div>
-      </div>
-    </div>
-    
-    <!-- Not Connected State -->
-    <div class="card" id="not-connected">
-      <div class="mint-section">
-        <h2>Connect Your Wallet</h2>
-        <p style="color: var(--oxen-text-muted); margin: 1rem 0;">Connect your Stacks wallet to mint and trade NFTs</p>
-        <button id="connect-btn" class="btn btn-primary">Connect Wallet</button>
-      </div>
-    </div>
-    
-    <!-- Connected State -->
-    <div class="card hidden" id="connected">
-      <div class="wallet-info">
-        <span>Connected:</span>
-        <span class="wallet-address" id="wallet-address">SP123...xyz</span>
-        <button id="disconnect-btn" class="btn btn-secondary">Disconnect</button>
-      </div>
-      
-      <div class="mint-section">
-        <h2>Mint Your NFT</h2>
-        <div class="mint-price">0.001 STX</div>
-        <button id="mint-btn" class="btn btn-primary">Mint NFT</button>
-      </div>
-      
-      <div id="status" class="status hidden"></div>
-      
-      <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--oxen-text-muted);">Your NFTs</h3>
-      <div id="nft-list" class="nft-grid">
-        <p class="no-nfts">No NFTs yet. Mint one!</p>
-      </div>
-      
-      <div class="fee-info">
-        <h4>Marketplace Fees</h4>
-        <p>• Listing Fee: 0.0013 STX</p>
-        <p>• Sell Fee: 0.0013 STX (taken from sale proceeds)</p>
-        <p>• Buy Fee: 0.0013 STX (added to purchase price)</p>
-      </div>
-    </div>
-    
-    <footer>
-      <p>Built on <a href="https://www.stacks.co" target="_blank">Stacks</a> | 
-        <a href="https://explorer.hiro.so/address/SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4?chain=mainnet" target="_blank">View Contract</a>
-      </p>
-    </footer>
-  </div>
-  
-  <script type="module" src="/src/main.js"></script>
-</body>
+      <footer class="reveal">
+        <p>
+          Built on
+          <a href="https://www.stacks.co" target="_blank" rel="noopener noreferrer">Stacks</a>
+          |
+          <a
+            href="https://explorer.hiro.so/address/SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4?chain=mainnet"
+            target="_blank"
+            rel="noopener noreferrer"
+            >View Contract</a
+          >
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
