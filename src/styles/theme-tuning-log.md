@@ -37,3 +37,4 @@ This log tracks iterative visual tuning commits for the colorful Stacks theme.
 - Iteration 34: hue shift  14deg, blur 14px
 - Iteration 35: hue shift  25deg, blur 10px
 - Iteration 36: hue shift  36deg, blur 11px
+- Iteration 37: hue shift  47deg, blur 12px
