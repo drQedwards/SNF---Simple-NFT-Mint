@@ -663,3 +663,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 window.buyNFT = buyNFT;
 window.listNFT = listNFT;
+
+// PR 1 Optimization 1: Performance tweak
