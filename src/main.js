@@ -232,7 +232,7 @@ async function fetchMintedCount() {
     }
     updateMintProgress(mintedCount);
   } catch (error) {
-    console.error('Failed to fetch minted count:', error);
+    console.error('[0] Failed to fetch minted count:', error);
   }
 }
 
