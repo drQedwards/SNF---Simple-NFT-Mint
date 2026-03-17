@@ -41,6 +41,27 @@
   --card-shadow: 0 20px 48px rgba(7, 0, 20, 0.45);
 }
 
+:root[data-theme='vibrant-neon'] {
+  --theme-tune-step: 120;
+  --theme-hue-shift: 180deg;
+  --surface-blur: 16px;
+  --bg-start: #0f0c29;
+  --bg-mid: #302b63;
+  --bg-end: #24243e;
+  --surface: rgba(48, 43, 99, 0.6);
+  --surface-strong: rgba(15, 12, 41, 0.85);
+  --text-main: #ffffff;
+  --text-muted: #b3b3b3;
+  --line: rgba(0, 255, 255, 0.4);
+  --accent-1: #ff00ff; /* Magenta */
+  --accent-2: #00ffff; /* Cyan */
+  --accent-3: #ffff00; /* Yellow */
+  --ok: #00ff00;
+  --error: #ff0000;
+  --warning: #ffa500;
+  --card-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -55,24 +76,30 @@ body {
   font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(120% 140% at 5% -10%, rgba(255, 188, 52, 0.35), transparent 38%),
-    radial-gradient(100% 120% at 80% 0%, rgba(0, 231, 255, 0.22), transparent 44%),
+    radial-gradient(120% 140% at 5% -10%, rgba(255, 0, 255, 0.35), transparent 38%),
+    radial-gradient(100% 120% at 80% 0%, rgba(0, 255, 255, 0.22), transparent 44%),
     linear-gradient(138deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  background-attachment: fixed;
   overflow-x: hidden;
 }
 
 .aurora-wrap {
   pointer-events: none;
   position: fixed;
-  inset: -20% -10%;
+  inset: -50%;
   z-index: 0;
   background:
-    radial-gradient(circle at 20% 40%, color-mix(in oklab, var(--accent-1), transparent 72%), transparent 62%),
-    radial-gradient(circle at 75% 30%, color-mix(in oklab, var(--accent-2), transparent 74%), transparent 58%),
-    radial-gradient(circle at 55% 80%, color-mix(in oklab, var(--accent-3), transparent 72%), transparent 54%);
-  filter: blur(48px) hue-rotate(var(--theme-hue-shift));
-  opacity: 0.85;
-  animation: drift 16s ease-in-out infinite alternate;
+    radial-gradient(circle at 20% 40%, var(--accent-1), transparent 60%),
+    radial-gradient(circle at 80% 30%, var(--accent-2), transparent 60%),
+    radial-gradient(circle at 50% 80%, var(--accent-3), transparent 60%);
+  filter: blur(100px);
+  opacity: 0.5;
+  animation: rotate-bg 30s linear infinite;
+}
+
+@keyframes rotate-bg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes drift {
