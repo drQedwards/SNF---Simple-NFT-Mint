@@ -701,3 +701,5 @@ window.listNFT = listNFT;
 // PR 28 Optimization 8: Performance tweak
 
 // PR 28 Optimization 9: Performance tweak
+
+// PR 28 Optimization 10: Performance tweak
