@@ -89,6 +89,7 @@ function getStacksNetwork() {
   return CONFIG.NETWORK === 'mainnet' ? STACKS_MAINNET : STACKS_TESTNET;
 }
 
+/** Formats address for PR 0 */
 function formatAddress(address) {
   if (!address || address.length < 12) return address || '';
   return `${address.slice(0, 8)}...${address.slice(-8)}`;
