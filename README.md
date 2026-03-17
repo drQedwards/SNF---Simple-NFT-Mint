@@ -92,3 +92,5 @@ npm run preview
 ## License
 
 ISC
+
+- Improvement 0.2: Better documentation for marketplace fees.
