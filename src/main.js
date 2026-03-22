@@ -687,22 +687,22 @@ window.listNFT = listNFT;
 
 // PR 1 Optimization 10: Performance tweak
 
-// PR 2 Optimization 1: Performance tweak
+// PR 3 Optimization 1: Performance tweak
 
-// PR 2 Optimization 2: Performance tweak
+// PR 3 Optimization 2: Performance tweak
 
-// PR 2 Optimization 3: Performance tweak
+// PR 3 Optimization 3: Performance tweak
 
-// PR 2 Optimization 4: Performance tweak
+// PR 3 Optimization 4: Performance tweak
 
-// PR 2 Optimization 5: Performance tweak
+// PR 3 Optimization 5: Performance tweak
 
-// PR 2 Optimization 6: Performance tweak
+// PR 3 Optimization 6: Performance tweak
 
-// PR 2 Optimization 7: Performance tweak
+// PR 3 Optimization 7: Performance tweak
 
-// PR 2 Optimization 8: Performance tweak
+// PR 3 Optimization 8: Performance tweak
 
-// PR 2 Optimization 9: Performance tweak
+// PR 3 Optimization 9: Performance tweak
 
-// PR 2 Optimization 10: Performance tweak
+// PR 3 Optimization 10: Performance tweak
