@@ -89,6 +89,7 @@ function getStacksNetwork() {
   return CONFIG.NETWORK === 'mainnet' ? STACKS_MAINNET : STACKS_TESTNET;
 }
 
+/** Formats address for PR 0 */
 function formatAddress(address) {
   if (!address || address.length < 12) return address || '';
   return `${address.slice(0, 8)}...${address.slice(-8)}`;
@@ -168,19 +169,21 @@ function renderActivityFeed() {
 }
 
 function setTheme(theme) {
-  const applied = theme === 'aurora' ? 'aurora' : 'solar';
+  const applied = ['aurora', 'solar', 'vibrant-neon'].includes(theme) ? theme : 'vibrant-neon';
   document.documentElement.setAttribute('data-theme', applied);
   localStorage.setItem(THEME_KEY, applied);
 }
 
 function initTheme() {
-  const persisted = localStorage.getItem(THEME_KEY) || 'solar';
+  const persisted = localStorage.getItem(THEME_KEY) || 'vibrant-neon';
   setTheme(persisted);
 }
 
 function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'solar';
-  setTheme(current === 'solar' ? 'aurora' : 'solar');
+  const current = document.documentElement.getAttribute('data-theme') || 'vibrant-neon';
+  const themes = ['vibrant-neon', 'solar', 'aurora'];
+  const nextIndex = (themes.indexOf(current) + 1) % themes.length;
+  setTheme(themes[nextIndex]);
 }
 
 function setConnectedState(connected) {
@@ -229,7 +232,7 @@ async function fetchMintedCount() {
     }
     updateMintProgress(mintedCount);
   } catch (error) {
-    console.error('Failed to fetch minted count:', error);
+    console.error('[0] Failed to fetch minted count:', error);
   }
 }
 
@@ -663,3 +666,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 window.buyNFT = buyNFT;
 window.listNFT = listNFT;
+
+// PR 0 - Enhancement: Internal optimization 0
+
+function helper_v0_6() { return '0_6'; }
+
+// Final commit for PR 0

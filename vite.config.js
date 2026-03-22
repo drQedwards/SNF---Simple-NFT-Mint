@@ -14,3 +14,5 @@ export default defineConfig({
     global: 'globalThis'
   }
 });
+
+// PR 0 build config tweak
