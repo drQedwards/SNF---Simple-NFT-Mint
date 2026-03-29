@@ -1,8 +1,8 @@
 import './styles/stacks-vivid-theme.css';
 
 import { createAppKit } from '@reown/appkit';
-import { AppConfig, UserSession, showConnect, openContractCall } from '@stacks/connect';
-import { deserializeCV, cvToValue, uintCV } from '@stacks/transactions';
+import { AppConfig, UserSession, openContractCall, showConnect } from '@stacks/connect';
+import { cvToJSON, deserializeCV, uintCV } from '@stacks/transactions';
 import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 const CONFIG = {
@@ -14,22 +14,30 @@ const CONFIG = {
   MINT_PRICE: 1000,
   LIST_FEE: 1300,
   APP_NAME: 'Simple NFT Marketplace',
-  APP_ICON: `${window.location.origin}/icon.png`,
+  APP_ICON: `${window.location.origin}/favicon.svg`,
   REOWN_PROJECT_ID: '4fb22bec203d094dbec52767e3bcc016',
   MINT_CAP: 10000,
   AUTO_REFRESH_MS: 30000,
+  MARKET_SCAN_LIMIT: 24,
 };
+
+const THEME_KEY = 'snf-theme-mode';
+const ACTIVITY_KEY = 'snf-activity-v1';
+const PREFERENCES_KEY = 'snf-ui-preferences-v2';
 
 const appConfig = new AppConfig(['store_write', 'publish_data']);
 const userSession = new UserSession({ appConfig });
 
-let appKit = null;
-let userAddress = null;
-let userNFTs = [];
-let autoRefreshTimer = null;
+const state = {
+  userAddress: null,
+  userNFTs: [],
+  marketListings: [],
+  autoRefreshTimer: null,
+  refreshInFlight: false,
+  statusTimer: null,
+};
 
-const THEME_KEY = 'snf-theme-mode';
-const ACTIVITY_KEY = 'snf-activity-v1';
+let appKit = null;
 
 const elements = {
   connectBtn: document.getElementById('connect-btn'),
@@ -40,18 +48,35 @@ const elements = {
   themeToggle: document.getElementById('theme-toggle'),
   autoRefresh: document.getElementById('auto-refresh'),
   nftFilter: document.getElementById('nft-filter'),
+  marketFilter: document.getElementById('market-filter'),
+  marketSort: document.getElementById('market-sort'),
   defaultListPrice: document.getElementById('default-list-price'),
   notConnected: document.getElementById('not-connected'),
   connected: document.getElementById('connected'),
   walletAddress: document.getElementById('wallet-address'),
+  walletChip: document.getElementById('wallet-chip'),
+  walletState: document.getElementById('wallet-state'),
+  walletStateDetail: document.getElementById('wallet-state-detail'),
+  dashboardSync: document.getElementById('dashboard-sync'),
+  dashboardSyncDetail: document.getElementById('dashboard-sync-detail'),
   minted: document.getElementById('minted'),
+  mintedDetail: document.getElementById('minted-detail'),
   listed: document.getElementById('listed'),
+  portfolioDetail: document.getElementById('portfolio-detail'),
+  listingCount: document.getElementById('listing-count'),
+  listingCountDetail: document.getElementById('listing-count-detail'),
+  salesCount: document.getElementById('sales-count'),
+  salesCountDetail: document.getElementById('sales-count-detail'),
   stxPrice: document.getElementById('stx-price'),
   stxPriceUpdated: document.getElementById('stx-price-updated'),
   networkStatus: document.getElementById('network-status'),
   networkHeight: document.getElementById('network-height'),
   status: document.getElementById('status'),
   nftList: document.getElementById('nft-list'),
+  marketListings: document.getElementById('market-listings'),
+  marketSummary: document.getElementById('market-summary'),
+  bestAsk: document.getElementById('best-ask'),
+  scanWindow: document.getElementById('scan-window'),
   activityFeed: document.getElementById('activity-feed'),
   mintProgressFill: document.getElementById('mint-progress-fill'),
   mintProgressLabel: document.getElementById('mint-progress-label'),
@@ -69,8 +94,8 @@ function initAppKit() {
       },
       themeMode: 'dark',
       themeVariables: {
-        '--w3m-accent': '#00dff8',
-        '--w3m-border-radius-master': '14px',
+        '--w3m-accent': '#3ae6ff',
+        '--w3m-border-radius-master': '16px',
       },
     });
     if (!appKit) {
@@ -91,22 +116,35 @@ function getStacksNetwork() {
 
 function formatAddress(address) {
   if (!address || address.length < 12) return address || '';
-  return `${address.slice(0, 8)}...${address.slice(-8)}`;
+  return `${address.slice(0, 8)}...${address.slice(-6)}`;
+}
+
+function formatFullAddress(address) {
+  return address || 'Not connected';
 }
 
 function formatExplorerUrl(txId) {
   return `https://explorer.hiro.so/txid/${txId}?chain=${CONFIG.NETWORK}`;
 }
 
-function showStatus(message, type = 'info') {
-  if (!elements.status) return;
-  elements.status.className = `status ${type}`;
-  elements.status.innerHTML = message;
-  elements.status.classList.remove('hidden');
+function formatTokenUrl(tokenId) {
+  return `https://explorer.hiro.so/txid/${CONFIG.NFT_CONTRACT_ADDRESS}.${CONFIG.NFT_CONTRACT_NAME}?chain=${CONFIG.NETWORK}#asset_id=${CONFIG.NFT_CONTRACT_ADDRESS}.${CONFIG.NFT_CONTRACT_NAME}::simple-nft::${tokenId}`;
 }
 
-function hideStatus() {
-  elements.status?.classList.add('hidden');
+function formatStxFromMicro(value) {
+  return `${(Number(value) / 1_000_000).toFixed(4)} STX`;
+}
+
+function formatRelativeTime(dateValue) {
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return 'Unknown time';
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
 }
 
 function parseJsonStorage(key, fallback) {
@@ -118,6 +156,26 @@ function parseJsonStorage(key, fallback) {
   } catch (_error) {
     return fallback;
   }
+}
+
+function loadPreferences() {
+  return parseJsonStorage(PREFERENCES_KEY, {
+    autoRefresh: true,
+    defaultListPrice: '0.01',
+    marketSort: 'recent',
+  });
+}
+
+function savePreferences(next) {
+  localStorage.setItem(PREFERENCES_KEY, JSON.stringify(next));
+}
+
+function getPreferences() {
+  return {
+    autoRefresh: Boolean(elements.autoRefresh?.checked),
+    defaultListPrice: elements.defaultListPrice?.value || '0.01',
+    marketSort: elements.marketSort?.value || 'recent',
+  };
 }
 
 function loadActivity() {
@@ -144,15 +202,13 @@ function renderActivityFeed() {
   if (!elements.activityFeed) return;
 
   const activity = loadActivity();
-  if (activity.length === 0) {
+  if (!activity.length) {
     elements.activityFeed.innerHTML = '<li class="activity-empty">No activity yet.</li>';
     return;
   }
 
   elements.activityFeed.innerHTML = activity
     .map((entry) => {
-      const when = new Date(entry.at);
-      const time = Number.isNaN(when.getTime()) ? entry.at : when.toLocaleString();
       const txLine = entry.txId
         ? `<a href="${formatExplorerUrl(entry.txId)}" target="_blank" rel="noopener noreferrer">View transaction</a>`
         : '';
@@ -161,7 +217,7 @@ function renderActivityFeed() {
         <strong>${entry.type}</strong>
         <span>${entry.message}</span>
         ${txLine}
-        <span class="activity-time">${time}</span>
+        <span class="activity-time">${formatRelativeTime(entry.at)}</span>
       </li>`;
     })
     .join('');
@@ -180,62 +236,137 @@ function initTheme() {
 
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'solar';
-  setTheme(current === 'solar' ? 'aurora' : 'solar');
+  const next = current === 'solar' ? 'aurora' : 'solar';
+  setTheme(next);
+  addActivity('Theme', `Switched dashboard theme to ${next}.`);
+}
+
+function showStatus(message, type = 'info', { persist = false } = {}) {
+  if (!elements.status) return;
+
+  if (state.statusTimer) {
+    window.clearTimeout(state.statusTimer);
+  }
+
+  elements.status.className = `status ${type}`;
+  elements.status.innerHTML = message;
+  elements.status.classList.remove('hidden');
+
+  if (!persist && type !== 'error') {
+    state.statusTimer = window.setTimeout(() => {
+      hideStatus();
+    }, 4500);
+  }
+}
+
+function hideStatus() {
+  if (state.statusTimer) {
+    window.clearTimeout(state.statusTimer);
+    state.statusTimer = null;
+  }
+
+  elements.status?.classList.add('hidden');
 }
 
 function setConnectedState(connected) {
   if (!elements.notConnected || !elements.connected) return;
 
+  elements.notConnected.classList.toggle('hidden', connected);
+  elements.connected.classList.toggle('hidden', !connected);
+}
+
+function setWalletSignals() {
+  const connected = Boolean(state.userAddress);
+  setConnectedState(connected);
+
   if (connected) {
-    elements.notConnected.classList.add('hidden');
-    elements.connected.classList.remove('hidden');
+    elements.walletState.textContent = 'Wallet connected';
+    elements.walletStateDetail.textContent = `${formatAddress(state.userAddress)} is ready for mint, list, cancel, and buy actions.`;
+    elements.walletAddress.textContent = formatFullAddress(state.userAddress);
+    elements.walletAddress.title = state.userAddress;
+    elements.walletChip.textContent = 'Live';
   } else {
-    elements.notConnected.classList.remove('hidden');
-    elements.connected.classList.add('hidden');
+    elements.walletState.textContent = 'Waiting for wallet';
+    elements.walletStateDetail.textContent = 'Connect Leather or Xverse to unlock mint and market actions.';
+    elements.walletAddress.textContent = 'Not connected';
+    elements.walletAddress.title = '';
   }
+}
+
+function updateSyncStatus(message, detail) {
+  elements.dashboardSync.textContent = message;
+  elements.dashboardSyncDetail.textContent = detail;
 }
 
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
 
-  if (elements.mintProgressFill) {
-    elements.mintProgressFill.style.width = `${ratio.toFixed(2)}%`;
+  elements.mintProgressFill.style.width = `${ratio.toFixed(2)}%`;
+  elements.mintProgressLabel.textContent = `${safe.toLocaleString()} / ${CONFIG.MINT_CAP.toLocaleString()} minted`;
+  elements.mintProgressFill.parentElement?.setAttribute('aria-valuenow', String(safe));
+  elements.mintedDetail.textContent =
+    safe >= CONFIG.MINT_CAP ? 'Collection sold out' : `${(CONFIG.MINT_CAP - safe).toLocaleString()} still available`;
+}
+
+async function callReadOnly(contractAddress, contractName, functionName, args = [], sender = contractAddress) {
+  const response = await fetch(`${getApiUrl()}/v2/contracts/call-read/${contractAddress}/${contractName}/${functionName}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      sender,
+      arguments: args,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Read-only call failed (${response.status})`);
   }
 
-  if (elements.mintProgressLabel) {
-    elements.mintProgressLabel.textContent = `${safe.toLocaleString()} / ${CONFIG.MINT_CAP.toLocaleString()} minted`;
+  const data = await response.json();
+  if (!data.okay || !data.result) {
+    throw new Error(data.cause || `Read-only call failed for ${functionName}`);
   }
+
+  return cvToJSON(deserializeCV(data.result));
+}
+
+function readCvNumber(json) {
+  return Number(json?.value ?? 0);
+}
+
+function readOptionalListing(json) {
+  if (!json?.value?.value) return null;
+
+  return {
+    seller: json.value.value.seller?.value || '',
+    priceMicroStx: Number(json.value.value.price?.value || 0),
+  };
 }
 
 async function fetchMintedCount() {
-  try {
-    const response = await fetch(
-      `${getApiUrl()}/v2/contracts/call-read/${CONFIG.NFT_CONTRACT_ADDRESS}/${CONFIG.NFT_CONTRACT_NAME}/get-total-minted`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sender: CONFIG.NFT_CONTRACT_ADDRESS, arguments: [] }),
-      }
-    );
+  const json = await callReadOnly(CONFIG.NFT_CONTRACT_ADDRESS, CONFIG.NFT_CONTRACT_NAME, 'get-total-minted');
+  const mintedCount = readCvNumber(json);
+  elements.minted.textContent = mintedCount.toLocaleString();
+  updateMintProgress(mintedCount);
+  return mintedCount;
+}
 
-    const data = await response.json();
-    if (!data.okay || !data.result) return;
+async function fetchMarketplaceStats() {
+  const [listingsJson, salesJson] = await Promise.all([
+    callReadOnly(CONFIG.MARKETPLACE_CONTRACT_ADDRESS, CONFIG.MARKETPLACE_CONTRACT_NAME, 'get-total-listings'),
+    callReadOnly(CONFIG.MARKETPLACE_CONTRACT_ADDRESS, CONFIG.MARKETPLACE_CONTRACT_NAME, 'get-total-sales'),
+  ]);
 
-    const cv = deserializeCV(data.result);
-    const mintedCount = Number(cvToValue(cv));
-    if (elements.minted) {
-      elements.minted.textContent = mintedCount.toLocaleString();
-    }
-    updateMintProgress(mintedCount);
-  } catch (error) {
-    console.error('Failed to fetch minted count:', error);
-  }
+  const listings = readCvNumber(listingsJson);
+  const sales = readCvNumber(salesJson);
+  elements.listingCount.textContent = listings.toLocaleString();
+  elements.listingCountDetail.textContent = 'Lifetime listings recorded';
+  elements.salesCount.textContent = sales.toLocaleString();
+  elements.salesCountDetail.textContent = 'Completed purchases on contract';
 }
 
 async function fetchNetworkStatus() {
-  if (!elements.networkStatus || !elements.networkHeight) return;
-
   try {
     const response = await fetch(`${getApiUrl()}/v2/info`);
     if (!response.ok) {
@@ -252,75 +383,71 @@ async function fetchNetworkStatus() {
     console.error('Failed to fetch network status:', error);
     elements.networkStatus.textContent = 'Degraded';
     elements.networkStatus.style.color = 'var(--warning)';
-    elements.networkHeight.textContent = 'Tip: unavailable';
+    elements.networkHeight.textContent = 'Tip unavailable';
   }
 }
 
 async function fetchStxPrice() {
-  if (!elements.stxPrice || !elements.stxPriceUpdated) return;
-
   try {
     const response = await fetch(
       'https://api.coingecko.com/api/v3/simple/price?ids=stacks&vs_currencies=usd&include_24hr_change=true&include_last_updated_at=true'
     );
-    if (!response.ok) throw new Error(`Status ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Status ${response.status}`);
+    }
 
     const data = await response.json();
     const usd = data?.stacks?.usd;
     const change = data?.stacks?.usd_24h_change;
     const updatedAt = data?.stacks?.last_updated_at;
 
-    if (typeof usd !== 'number') throw new Error('No USD value in response');
+    if (typeof usd !== 'number') {
+      throw new Error('Quote missing USD value');
+    }
 
     elements.stxPrice.textContent = `$${usd.toFixed(3)}`;
-
     if (typeof change === 'number') {
-      elements.stxPrice.setAttribute('data-price-trend', change >= 0 ? 'up' : 'down');
       elements.stxPriceUpdated.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% (24h)`;
     } else {
-      elements.stxPrice.removeAttribute('data-price-trend');
       elements.stxPriceUpdated.textContent = '24h trend unavailable';
     }
 
     if (updatedAt) {
-      const dt = new Date(updatedAt * 1000);
-      if (!Number.isNaN(dt.getTime())) {
-        elements.stxPriceUpdated.textContent += ` | ${dt.toLocaleTimeString()}`;
-      }
+      elements.stxPriceUpdated.textContent += ` | ${formatRelativeTime(updatedAt * 1000)}`;
     }
   } catch (error) {
     console.error('Failed to fetch STX quote:', error);
     elements.stxPrice.textContent = '--';
     elements.stxPriceUpdated.textContent = 'Quote unavailable';
-    elements.stxPrice.removeAttribute('data-price-trend');
   }
 }
 
 async function fetchUserNFTs() {
-  if (!userAddress) return;
+  if (!state.userAddress) {
+    state.userNFTs = [];
+    elements.listed.textContent = '0';
+    elements.portfolioDetail.textContent = 'Connect a wallet to view your holdings';
+    renderNFTList();
+    return;
+  }
 
   try {
     const response = await fetch(
-      `${getApiUrl()}/extended/v1/tokens/nft/holdings?principal=${userAddress}&asset_identifiers=${CONFIG.NFT_CONTRACT_ADDRESS}.${CONFIG.NFT_CONTRACT_NAME}::simple-nft&limit=80`
+      `${getApiUrl()}/extended/v1/tokens/nft/holdings?principal=${state.userAddress}&asset_identifiers=${CONFIG.NFT_CONTRACT_ADDRESS}.${CONFIG.NFT_CONTRACT_NAME}::simple-nft&limit=80`
     );
     const data = await response.json();
-    userNFTs = Array.isArray(data.results) ? data.results : [];
-    if (elements.listed) {
-      elements.listed.textContent = userNFTs.length.toLocaleString();
-    }
+    state.userNFTs = Array.isArray(data.results) ? data.results : [];
+    elements.listed.textContent = state.userNFTs.length.toLocaleString();
+    elements.portfolioDetail.textContent =
+      state.userNFTs.length === 0 ? 'No NFTs in this wallet yet' : 'Ready to list directly from portfolio';
     renderNFTList();
   } catch (error) {
     console.error('Failed to fetch user NFTs:', error);
-    userNFTs = [];
-    if (elements.listed) {
-      elements.listed.textContent = '0';
-    }
+    state.userNFTs = [];
+    elements.listed.textContent = '0';
+    elements.portfolioDetail.textContent = 'Portfolio read failed';
     renderNFTList();
   }
-}
-
-function getFilterValue() {
-  return elements.nftFilter?.value?.trim() || '';
 }
 
 function getTokenIdFromHolding(nft) {
@@ -330,18 +457,16 @@ function getTokenIdFromHolding(nft) {
 }
 
 function renderNFTList() {
-  if (!elements.nftList) return;
-
-  const query = getFilterValue();
+  const query = elements.nftFilter?.value?.trim() || '';
   const filtered = query
-    ? userNFTs.filter((nft) => {
+    ? state.userNFTs.filter((nft) => {
         const tokenId = getTokenIdFromHolding(nft);
         return tokenId && tokenId.includes(query);
       })
-    : userNFTs;
+    : state.userNFTs;
 
-  if (filtered.length === 0) {
-    const message = query ? `No NFTs matching "${query}".` : 'No NFTs yet. Mint one.';
+  if (!filtered.length) {
+    const message = query ? `No NFTs matching "${query}".` : state.userAddress ? 'No NFTs yet. Mint one.' : 'Connect wallet to view your NFTs.';
     elements.nftList.innerHTML = `<p class="no-nfts">${message}</p>`;
     return;
   }
@@ -354,8 +479,10 @@ function renderNFTList() {
           <div class="nft-image"></div>
           <div>
             <span class="nft-id">Token #${tokenId}</span>
+            <span class="market-meta">Owned by connected wallet</span>
           </div>
-          <button class="list-nft-btn" data-token-id="${tokenId}" type="button">List for Sale</button>
+          <a class="btn btn-secondary" href="${formatTokenUrl(tokenId)}" target="_blank" rel="noopener noreferrer">View Explorer</a>
+          <button class="btn btn-primary list-nft-btn" data-token-id="${tokenId}" type="button">List for Sale</button>
         </article>
       `;
     })
@@ -371,24 +498,170 @@ function renderNFTList() {
   });
 }
 
-async function refreshDashboard() {
-  await Promise.all([fetchMintedCount(), fetchNetworkStatus(), fetchStxPrice()]);
-  if (userAddress) {
-    await fetchUserNFTs();
+async function fetchRecentListings(latestMintedCount, { silent = false } = {}) {
+  const start = Math.max(1, latestMintedCount - CONFIG.MARKET_SCAN_LIMIT + 1);
+  const tokenIds = [];
+
+  for (let tokenId = latestMintedCount; tokenId >= start; tokenId -= 1) {
+    tokenIds.push(tokenId);
+  }
+
+  const listings = [];
+
+  for (const tokenId of tokenIds) {
+    try {
+      const json = await callReadOnly(
+        CONFIG.MARKETPLACE_CONTRACT_ADDRESS,
+        CONFIG.MARKETPLACE_CONTRACT_NAME,
+        'get-listing',
+        [serializeUint(tokenId)]
+      );
+      const listing = readOptionalListing(json);
+
+      if (listing) {
+        listings.push({
+          tokenId,
+          seller: listing.seller,
+          priceMicroStx: listing.priceMicroStx,
+          scannedAt: latestMintedCount,
+        });
+      }
+    } catch (error) {
+      if (!silent) {
+        console.warn(`Listing read failed for token #${tokenId}:`, error);
+      }
+    }
+  }
+
+  state.marketListings = listings;
+  renderMarketListings();
+}
+
+function serializeUint(value) {
+  return `0x${Buffer.from(uintCV(value).serialize()).toString('hex')}`;
+}
+
+function getSortedListings() {
+  const query = elements.marketFilter?.value?.trim().toLowerCase() || '';
+  const sort = elements.marketSort?.value || 'recent';
+
+  let listings = state.marketListings.filter((listing) => {
+    if (!query) return true;
+    return (
+      String(listing.tokenId).includes(query) ||
+      listing.seller.toLowerCase().includes(query)
+    );
+  });
+
+  if (sort === 'price-asc') {
+    listings = listings.sort((a, b) => a.priceMicroStx - b.priceMicroStx);
+  } else if (sort === 'price-desc') {
+    listings = listings.sort((a, b) => b.priceMicroStx - a.priceMicroStx);
+  }
+
+  return listings;
+}
+
+function renderMarketListings() {
+  const listings = getSortedListings();
+
+  if (!state.marketListings.length) {
+    elements.bestAsk.textContent = '--';
+    elements.scanWindow.textContent = 'No active listings in recent scan';
+    elements.marketListings.innerHTML = '<p class="no-nfts">No recent listings found in the latest scan window.</p>';
+    return;
+  }
+
+  const bestAskValue = Math.min(...state.marketListings.map((listing) => listing.priceMicroStx));
+  elements.bestAsk.textContent = formatStxFromMicro(bestAskValue);
+  elements.scanWindow.textContent = `Last ${CONFIG.MARKET_SCAN_LIMIT} minted tokens scanned`;
+
+  if (!listings.length) {
+    elements.marketListings.innerHTML = '<p class="no-nfts">No listings match the current filter.</p>';
+    return;
+  }
+
+  elements.marketListings.innerHTML = listings
+    .map((listing) => {
+      const isOwner = Boolean(state.userAddress) && listing.seller === state.userAddress;
+      const actionLabel = isOwner ? 'Cancel Listing' : 'Buy NFT';
+
+      return `
+        <article class="market-card">
+          <div class="market-image"></div>
+          <div>
+            <span class="market-id">Token #${listing.tokenId}</span>
+            <span class="market-owner">Seller: ${formatAddress(listing.seller)}</span>
+          </div>
+          <div class="market-price">
+            <strong>${formatStxFromMicro(listing.priceMicroStx)}</strong>
+            <span>${isOwner ? 'Your listing' : 'Current ask'}</span>
+          </div>
+          <button class="btn btn-primary market-action-btn" data-token-id="${listing.tokenId}" data-action="${isOwner ? 'cancel' : 'buy'}" type="button">${actionLabel}</button>
+        </article>
+      `;
+    })
+    .join('');
+
+  document.querySelectorAll('.market-action-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tokenId = Number.parseInt(btn.dataset.tokenId || '', 10);
+      const action = btn.dataset.action;
+
+      if (!Number.isFinite(tokenId)) return;
+      if (action === 'cancel') {
+        cancelListing(tokenId);
+      } else {
+        buyNFT(tokenId);
+      }
+    });
+  });
+}
+
+async function refreshDashboard({ withStatus = false } = {}) {
+  if (state.refreshInFlight) return;
+
+  state.refreshInFlight = true;
+  elements.refreshBtn.disabled = true;
+  elements.refreshBtn.textContent = 'Refreshing...';
+  updateSyncStatus('Refreshing dashboard', 'Pulling live market and network data.');
+
+  try {
+    const mintedCount = await fetchMintedCount();
+    await Promise.all([fetchMarketplaceStats(), fetchNetworkStatus(), fetchStxPrice(), fetchUserNFTs()]);
+    await fetchRecentListings(mintedCount, { silent: true });
+
+    const completedAt = new Date();
+    updateSyncStatus('Live data synced', `Last refresh ${formatRelativeTime(completedAt)}`);
+
+    if (withStatus) {
+      showStatus('Dashboard refreshed successfully.', 'success');
+      addActivity('Refresh', 'Dashboard data refreshed.');
+    }
+  } catch (error) {
+    console.error('Dashboard refresh failed:', error);
+    updateSyncStatus('Refresh degraded', 'Some live endpoints did not respond cleanly.');
+    if (withStatus) {
+      showStatus('Refresh failed. Try again in a moment.', 'error', { persist: true });
+    }
+  } finally {
+    state.refreshInFlight = false;
+    elements.refreshBtn.disabled = false;
+    elements.refreshBtn.textContent = 'Refresh Dashboard';
   }
 }
 
 function clearAutoRefresh() {
-  if (!autoRefreshTimer) return;
-  clearInterval(autoRefreshTimer);
-  autoRefreshTimer = null;
+  if (!state.autoRefreshTimer) return;
+  clearInterval(state.autoRefreshTimer);
+  state.autoRefreshTimer = null;
 }
 
 function setAutoRefresh(enabled) {
   clearAutoRefresh();
   if (!enabled) return;
 
-  autoRefreshTimer = setInterval(() => {
+  state.autoRefreshTimer = setInterval(() => {
     refreshDashboard().catch((error) => {
       console.error('Auto refresh failed:', error);
     });
@@ -406,18 +679,15 @@ async function connectWallet() {
     redirectTo: '/',
     onFinish: async () => {
       const userData = userSession.loadUserData();
-      const chainAddress =
+      state.userAddress =
         CONFIG.NETWORK === 'mainnet' ? userData.profile.stxAddress.mainnet : userData.profile.stxAddress.testnet;
-      userAddress = chainAddress;
-      updateUI();
-      addActivity('Wallet', 'Wallet connected');
+      setWalletSignals();
+      addActivity('Wallet', 'Wallet connected.');
       showStatus('Connected to wallet.', 'success');
-      setTimeout(hideStatus, 2200);
       await refreshDashboard();
     },
     onCancel: () => {
-      showStatus('Connection canceled.', 'error');
-      setTimeout(hideStatus, 2600);
+      showStatus('Connection canceled.', 'error', { persist: true });
     },
     userSession,
   });
@@ -425,14 +695,13 @@ async function connectWallet() {
 
 function disconnectWallet() {
   userSession.signUserOut('/');
-  userAddress = null;
-  userNFTs = [];
-  if (elements.listed) {
-    elements.listed.textContent = '0';
-  }
-  updateUI();
+  state.userAddress = null;
+  state.userNFTs = [];
+  setWalletSignals();
+  renderNFTList();
+  renderMarketListings();
+  addActivity('Wallet', 'Wallet disconnected.');
   hideStatus();
-  addActivity('Wallet', 'Wallet disconnected');
 }
 
 function getDefaultPriceMicroStx() {
@@ -444,21 +713,19 @@ function getDefaultPriceMicroStx() {
 
 function validateListPrice(priceMicroStx) {
   if (!Number.isFinite(priceMicroStx) || priceMicroStx <= CONFIG.LIST_FEE) {
-    showStatus('List price must be greater than 0.0013 STX.', 'error');
+    showStatus('List price must be greater than 0.0013 STX.', 'error', { persist: true });
     return false;
   }
   return true;
 }
 
 function mintNFT() {
-  if (!userAddress) {
-    showStatus('Connect a wallet first.', 'error');
+  if (!state.userAddress) {
+    showStatus('Connect a wallet first.', 'error', { persist: true });
     return;
   }
 
-  if (elements.mintBtn) {
-    elements.mintBtn.disabled = true;
-  }
+  elements.mintBtn.disabled = true;
   showStatus('Opening wallet approval for mint...', 'info');
 
   openContractCall({
@@ -473,30 +740,24 @@ function mintNFT() {
     },
     onFinish: async (data) => {
       const txId = data.txId;
-      showStatus(`NFT minted. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
-      addActivity('Mint', `Mint submitted by ${formatAddress(userAddress)}`, txId);
-      if (elements.mintBtn) {
-        elements.mintBtn.disabled = false;
-      }
-
-      setTimeout(() => {
+      showStatus(`Mint submitted. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
+      addActivity('Mint', `Mint submitted by ${formatAddress(state.userAddress)}.`, txId);
+      elements.mintBtn.disabled = false;
+      window.setTimeout(() => {
         refreshDashboard();
       }, 8000);
     },
     onCancel: () => {
-      showStatus('Mint transaction canceled.', 'error');
-      if (elements.mintBtn) {
-        elements.mintBtn.disabled = false;
-      }
-      setTimeout(hideStatus, 2600);
+      showStatus('Mint transaction canceled.', 'error', { persist: true });
+      elements.mintBtn.disabled = false;
     },
     userSession,
   });
 }
 
 function listNFT(tokenId) {
-  if (!userAddress) {
-    showStatus('Connect a wallet first.', 'error');
+  if (!state.userAddress) {
+    showStatus('Connect a wallet first.', 'error', { persist: true });
     return;
   }
 
@@ -509,10 +770,7 @@ function listNFT(tokenId) {
     const parsed = Number.parseFloat(promptValue);
     priceInMicroStx = Math.floor(parsed * 1_000_000);
     if (!validateListPrice(priceInMicroStx)) return;
-
-    if (elements.defaultListPrice) {
-      elements.defaultListPrice.value = parsed.toFixed(4);
-    }
+    elements.defaultListPrice.value = parsed.toFixed(4);
   }
 
   showStatus(`Opening wallet approval to list token #${tokenId}...`, 'info');
@@ -533,22 +791,21 @@ function listNFT(tokenId) {
         `Token #${tokenId} listed. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`,
         'success'
       );
-      addActivity('List', `Listed token #${tokenId} for ${(priceInMicroStx / 1_000_000).toFixed(4)} STX`, txId);
-      setTimeout(() => {
-        fetchUserNFTs();
+      addActivity('List', `Listed token #${tokenId} for ${formatStxFromMicro(priceInMicroStx)}.`, txId);
+      window.setTimeout(() => {
+        refreshDashboard();
       }, 8000);
     },
     onCancel: () => {
-      showStatus(`Listing for token #${tokenId} canceled.`, 'error');
-      setTimeout(hideStatus, 2600);
+      showStatus(`Listing for token #${tokenId} canceled.`, 'error', { persist: true });
     },
     userSession,
   });
 }
 
 function buyNFT(tokenId) {
-  if (!userAddress) {
-    showStatus('Connect a wallet first.', 'error');
+  if (!state.userAddress) {
+    showStatus('Connect a wallet first.', 'error', { persist: true });
     return;
   }
 
@@ -566,51 +823,61 @@ function buyNFT(tokenId) {
     },
     onFinish: (data) => {
       const txId = data.txId;
-      showStatus(`NFT purchased. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
-      addActivity('Buy', `Purchased token #${tokenId}`, txId);
-      setTimeout(() => {
-        fetchUserNFTs();
+      showStatus(`Purchase submitted. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
+      addActivity('Buy', `Bought token #${tokenId}.`, txId);
+      window.setTimeout(() => {
+        refreshDashboard();
       }, 8000);
     },
     onCancel: () => {
-      showStatus('Purchase canceled.', 'error');
-      setTimeout(hideStatus, 2600);
+      showStatus('Purchase canceled.', 'error', { persist: true });
     },
     userSession,
   });
 }
 
-function updateUI() {
-  const connected = Boolean(userAddress);
-  setConnectedState(connected);
-
-  if (connected) {
-    if (elements.walletAddress) {
-      elements.walletAddress.textContent = userAddress;
-      elements.walletAddress.title = userAddress;
-    }
-    fetchUserNFTs();
-  } else {
-    if (elements.walletAddress) {
-      elements.walletAddress.textContent = 'Not connected';
-      elements.walletAddress.title = '';
-    }
-    if (elements.nftList) {
-      elements.nftList.innerHTML = '<p class="no-nfts">Connect wallet to view your NFTs.</p>';
-    }
+function cancelListing(tokenId) {
+  if (!state.userAddress) {
+    showStatus('Connect a wallet first.', 'error', { persist: true });
+    return;
   }
+
+  showStatus(`Opening wallet approval to cancel token #${tokenId} listing...`, 'info');
+
+  openContractCall({
+    contractAddress: CONFIG.MARKETPLACE_CONTRACT_ADDRESS,
+    contractName: CONFIG.MARKETPLACE_CONTRACT_NAME,
+    functionName: 'cancel-listing',
+    functionArgs: [uintCV(tokenId)],
+    network: getStacksNetwork(),
+    appDetails: {
+      name: CONFIG.APP_NAME,
+      icon: CONFIG.APP_ICON,
+    },
+    onFinish: (data) => {
+      const txId = data.txId;
+      showStatus(`Listing canceled. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
+      addActivity('Cancel', `Canceled listing for token #${tokenId}.`, txId);
+      window.setTimeout(() => {
+        refreshDashboard();
+      }, 8000);
+    },
+    onCancel: () => {
+      showStatus('Cancel listing request was dismissed.', 'error', { persist: true });
+    },
+    userSession,
+  });
 }
 
 async function copyAddress() {
-  if (!userAddress) return;
+  if (!state.userAddress) return;
+
   try {
-    await navigator.clipboard.writeText(userAddress);
+    await navigator.clipboard.writeText(state.userAddress);
     showStatus('Wallet address copied.', 'success');
-    setTimeout(hideStatus, 1800);
   } catch (error) {
     console.error('Failed to copy address:', error);
-    showStatus('Could not copy address from this browser context.', 'error');
-    setTimeout(hideStatus, 2600);
+    showStatus('Could not copy address from this browser context.', 'error', { persist: true });
   }
 }
 
@@ -621,45 +888,66 @@ function bindEvents() {
   elements.copyAddressBtn?.addEventListener('click', copyAddress);
   elements.themeToggle?.addEventListener('click', toggleTheme);
   elements.refreshBtn?.addEventListener('click', () => {
-    refreshDashboard();
+    refreshDashboard({ withStatus: true });
   });
   elements.nftFilter?.addEventListener('input', renderNFTList);
-  elements.autoRefresh?.addEventListener('change', (event) => {
-    setAutoRefresh(Boolean(event.target.checked));
+  elements.marketFilter?.addEventListener('input', renderMarketListings);
+  elements.marketSort?.addEventListener('change', () => {
+    renderMarketListings();
+    savePreferences(getPreferences());
   });
+  elements.defaultListPrice?.addEventListener('change', () => savePreferences(getPreferences()));
+  elements.autoRefresh?.addEventListener('change', (event) => {
+    const enabled = Boolean(event.target.checked);
+    setAutoRefresh(enabled);
+    savePreferences(getPreferences());
+  });
+}
+
+function applyPersistedPreferences() {
+  const prefs = loadPreferences();
+  if (elements.autoRefresh) {
+    elements.autoRefresh.checked = prefs.autoRefresh;
+  }
+  if (elements.defaultListPrice && prefs.defaultListPrice) {
+    elements.defaultListPrice.value = prefs.defaultListPrice;
+  }
+  if (elements.marketSort && prefs.marketSort) {
+    elements.marketSort.value = prefs.marketSort;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   initAppKit();
+  applyPersistedPreferences();
   bindEvents();
   renderActivityFeed();
+  setWalletSignals();
+  renderNFTList();
+  renderMarketListings();
 
-  const autoEnabled = Boolean(elements.autoRefresh?.checked);
-  setAutoRefresh(autoEnabled);
+  setAutoRefresh(Boolean(elements.autoRefresh?.checked));
 
   if (userSession.isUserSignedIn()) {
     const userData = userSession.loadUserData();
-    userAddress =
+    state.userAddress =
       CONFIG.NETWORK === 'mainnet' ? userData.profile.stxAddress.mainnet : userData.profile.stxAddress.testnet;
-    updateUI();
+    setWalletSignals();
   }
 
   if (userSession.isSignInPending()) {
     try {
       const userData = await userSession.handlePendingSignIn();
-      userAddress =
+      state.userAddress =
         CONFIG.NETWORK === 'mainnet' ? userData.profile.stxAddress.mainnet : userData.profile.stxAddress.testnet;
-      addActivity('Wallet', 'Wallet sign-in completed');
-      updateUI();
+      addActivity('Wallet', 'Wallet sign-in completed.');
+      setWalletSignals();
     } catch (error) {
       console.error('Sign-in completion failed:', error);
-      showStatus('Wallet sign-in could not complete.', 'error');
+      showStatus('Wallet sign-in could not complete.', 'error', { persist: true });
     }
   }
 
   await refreshDashboard();
 });
-
-window.buyNFT = buyNFT;
-window.listNFT = listNFT;
