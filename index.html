@@ -3,36 +3,121 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Simple NFT Marketplace on Stacks lets you mint, list, discover, and buy NFTs from a live mainnet dashboard."
+    />
+    <meta name="theme-color" content="#0b1220" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <title>Simple NFT Marketplace</title>
+    <title>Simple NFT Marketplace | Mainnet Studio</title>
   </head>
   <body>
     <div class="aurora-wrap"></div>
-    <main class="container">
-      <header class="hero reveal">
-        <div>
-          <p class="kicker">Stacks Mainnet</p>
-          <h1>Simple NFT Marketplace</h1>
-          <p class="subtitle">Mint, list, and track NFT activity with a vivid Stacks dashboard.</p>
+
+    <main class="page-shell">
+      <header class="topbar reveal">
+        <div class="brand-lockup">
+          <div class="brand-badge">SN</div>
+          <div>
+            <p class="kicker">Stacks Mainnet Marketplace</p>
+            <h1>Simple NFT Studio</h1>
+            <p class="subtitle">
+              Mint collectible supply, watch live listings, and operate your portfolio from one vivid market board.
+            </p>
+          </div>
         </div>
-        <button id="theme-toggle" class="btn btn-secondary" type="button">Switch Theme</button>
+
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="btn btn-secondary" type="button">Switch Theme</button>
+          <button id="refresh-btn" class="btn btn-primary" type="button">Refresh Dashboard</button>
+        </div>
       </header>
+
+      <section class="hero-grid reveal">
+        <article class="hero-card">
+          <div class="hero-copy">
+            <p class="eyebrow">Market Control</p>
+            <h2>Track supply, mint faster, and move on fresh listings before they cool off.</h2>
+            <p class="hero-note">
+              This dashboard pairs wallet actions with live marketplace signals, stored activity, and recent listing
+              discovery for the active NFT contract on Stacks.
+            </p>
+          </div>
+
+          <div class="hero-rail">
+            <div class="signal-card">
+              <span class="signal-label">Wallet status</span>
+              <strong id="wallet-state">Waiting for wallet</strong>
+              <span id="wallet-state-detail" class="signal-meta">Connect Leather or Xverse to unlock mint and market actions.</span>
+            </div>
+
+            <div class="signal-card emphasis">
+              <span class="signal-label">Dashboard sync</span>
+              <strong id="dashboard-sync">Awaiting first refresh</strong>
+              <span id="dashboard-sync-detail" class="signal-meta">Live reads pull from Stacks and market endpoints.</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="wallet-dock panel">
+          <div id="not-connected" class="wallet-connect-card">
+            <p class="eyebrow">Wallet Access</p>
+            <h3>Connect your wallet</h3>
+            <p>Use Leather or Xverse to mint, list, and buy on Stacks mainnet.</p>
+            <button id="connect-btn" class="btn btn-primary" type="button">Connect Wallet</button>
+          </div>
+
+          <div id="connected" class="wallet-connected hidden">
+            <div class="wallet-head">
+              <div>
+                <p class="wallet-label">Connected wallet</p>
+                <p id="wallet-address" class="wallet-address">SP123...xyz</p>
+              </div>
+              <span id="wallet-chip" class="wallet-chip">Live</span>
+            </div>
+
+            <div class="wallet-actions">
+              <button id="copy-address-btn" class="btn btn-secondary" type="button">Copy</button>
+              <button id="disconnect-btn" class="btn btn-secondary" type="button">Disconnect</button>
+            </div>
+
+            <label class="auto-refresh" for="auto-refresh">
+              <input id="auto-refresh" type="checkbox" checked />
+              Auto refresh every 30s
+            </label>
+
+            <div id="status" class="status hidden" role="status" aria-live="polite"></div>
+          </div>
+        </aside>
+      </section>
 
       <section class="metrics reveal" aria-label="Marketplace stats">
         <article class="metric-card">
           <p class="metric-label">Total Minted</p>
           <p id="minted" class="metric-value">0</p>
+          <p id="minted-detail" class="metric-meta">Supply on chain</p>
         </article>
         <article class="metric-card">
-          <p class="metric-label">Owned by You</p>
+          <p class="metric-label">Portfolio Count</p>
           <p id="listed" class="metric-value">0</p>
+          <p id="portfolio-detail" class="metric-meta">NFTs held by your wallet</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-label">Active Listings</p>
+          <p id="listing-count" class="metric-value">0</p>
+          <p id="listing-count-detail" class="metric-meta">Recent listings tracked</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-label">Marketplace Sales</p>
+          <p id="sales-count" class="metric-value">0</p>
+          <p id="sales-count-detail" class="metric-meta">Total recorded sales</p>
         </article>
         <article class="metric-card">
           <p class="metric-label">STX Spot (USD)</p>
@@ -48,7 +133,10 @@
 
       <section class="progress-card reveal" aria-label="Mint progress">
         <div class="progress-head">
-          <h2>Mint Tracker</h2>
+          <div>
+            <p class="eyebrow">Supply Pressure</p>
+            <h2>Mint Tracker</h2>
+          </div>
           <p id="mint-progress-label">0 / 10,000 minted</p>
         </div>
         <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="10000" aria-valuenow="0">
@@ -56,73 +144,114 @@
         </div>
       </section>
 
-      <section class="controls reveal">
-        <button id="refresh-btn" class="btn btn-primary" type="button">Refresh Dashboard</button>
-        <label class="auto-refresh">
-          <input id="auto-refresh" type="checkbox" checked />
-          Auto refresh every 30s
-        </label>
-      </section>
-
-      <section class="panel reveal" id="not-connected">
-        <h2>Connect your wallet</h2>
-        <p>Use Leather or Xverse to mint and list NFTs on Stacks.</p>
-        <button id="connect-btn" class="btn btn-primary" type="button">Connect Wallet</button>
-      </section>
-
-      <section class="panel reveal hidden" id="connected">
-        <div class="wallet-row">
-          <div>
-            <p class="wallet-label">Connected wallet</p>
-            <p id="wallet-address" class="wallet-address">SP123...xyz</p>
+      <section class="dashboard-grid">
+        <section class="panel reveal mint-command">
+          <div class="panel-head">
+            <p class="eyebrow">Mint Console</p>
+            <h3>Mint a new Simple NFT</h3>
           </div>
-          <div class="wallet-actions">
-            <button id="copy-address-btn" class="btn btn-secondary" type="button">Copy</button>
-            <button id="disconnect-btn" class="btn btn-secondary" type="button">Disconnect</button>
-          </div>
-        </div>
 
-        <div class="mint-zone">
-          <h2>Mint NFT</h2>
-          <p class="price-chip">Mint price: 0.001 STX</p>
+          <div class="mint-summary">
+            <div class="mini-stat">
+              <span class="mini-label">Mint price</span>
+              <strong>0.001 STX</strong>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-label">Collection cap</span>
+              <strong>10,000 NFTs</strong>
+            </div>
+          </div>
+
           <button id="mint-btn" class="btn btn-primary" type="button">Mint NFT</button>
-        </div>
+          <p class="panel-note">Mint submits a wallet approval using the `simple-nft-v4` contract on mainnet.</p>
+        </section>
 
-        <div class="list-config">
-          <label for="default-list-price">Default list price (STX)</label>
-          <input id="default-list-price" type="number" min="0.0014" step="0.0001" value="0.01" />
-          <small>This value is used when you click "List for Sale" on any NFT.</small>
-        </div>
+        <section class="panel reveal portfolio-panel">
+          <div class="panel-head">
+            <p class="eyebrow">Portfolio</p>
+            <h3>Your NFTs</h3>
+          </div>
 
-        <div id="status" class="status hidden" role="status" aria-live="polite"></div>
+          <div class="portfolio-controls">
+            <div class="list-config">
+              <label for="default-list-price">Default list price (STX)</label>
+              <input id="default-list-price" type="number" min="0.0014" step="0.0001" value="0.01" />
+              <small>Used when you click “List for Sale” on any NFT in your wallet.</small>
+            </div>
 
-        <div class="nft-head">
-          <h3>Your NFTs</h3>
-          <input id="nft-filter" type="text" placeholder="Filter by token id" />
-        </div>
-        <div id="nft-list" class="nft-grid">
-          <p class="no-nfts">No NFTs yet. Mint one.</p>
-        </div>
+            <div class="portfolio-filter">
+              <label for="nft-filter">Filter owned NFTs</label>
+              <input id="nft-filter" type="text" placeholder="Filter by token id" />
+            </div>
+          </div>
+
+          <div id="nft-list" class="nft-grid">
+            <p class="no-nfts">No NFTs yet. Mint one.</p>
+          </div>
+        </section>
+
+        <section class="panel reveal market-panel">
+          <div class="panel-head">
+            <p class="eyebrow">Market Watch</p>
+            <h3>Recent listings</h3>
+          </div>
+
+          <div class="market-toolbar">
+            <div class="portfolio-filter">
+              <label for="market-filter">Filter listings</label>
+              <input id="market-filter" type="text" placeholder="Token id or seller address" />
+            </div>
+
+            <div class="portfolio-filter">
+              <label for="market-sort">Sort listings</label>
+              <select id="market-sort">
+                <option value="recent">Newest scanned</option>
+                <option value="price-asc">Lowest price</option>
+                <option value="price-desc">Highest price</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="market-summary" class="market-summary">
+            <div class="mini-stat">
+              <span class="mini-label">Best ask</span>
+              <strong id="best-ask">--</strong>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-label">Tracked range</span>
+              <strong id="scan-window">Latest tokens</strong>
+            </div>
+          </div>
+
+          <div id="market-listings" class="market-grid">
+            <p class="no-nfts">Market listings will appear after the first refresh.</p>
+          </div>
+        </section>
       </section>
 
-      <section class="panel reveal">
-        <div class="activity-head">
-          <h3>Recent Activity</h3>
-          <small>Stored in your browser</small>
-        </div>
-        <ul id="activity-feed" class="activity-feed">
-          <li class="activity-empty">No activity yet.</li>
-        </ul>
+      <section class="lower-grid">
+        <section class="panel reveal">
+          <div class="activity-head">
+            <h3>Recent Activity</h3>
+            <small>Stored in your browser</small>
+          </div>
+          <ul id="activity-feed" class="activity-feed">
+            <li class="activity-empty">No activity yet.</li>
+          </ul>
+        </section>
+
+        <section class="panel reveal fee-card">
+          <div class="panel-head">
+            <p class="eyebrow">Fee Signals</p>
+            <h3>Marketplace fees</h3>
+          </div>
+          <p>Listing fee: 0.0013 STX</p>
+          <p>Sell fee: 0.0013 STX deducted from sale proceeds</p>
+          <p>Buy fee: 0.0013 STX added to purchase value</p>
+        </section>
       </section>
 
-      <section class="panel reveal fee-card">
-        <h3>Marketplace Fees</h3>
-        <p>Listing fee: 0.0013 STX</p>
-        <p>Sell fee: 0.0013 STX (deducted from sale proceeds)</p>
-        <p>Buy fee: 0.0013 STX (added to purchase amount)</p>
-      </section>
-
-      <footer class="reveal">
+      <footer class="reveal footer">
         <p>
           Built on
           <a href="https://www.stacks.co" target="_blank" rel="noopener noreferrer">Stacks</a>
@@ -131,7 +260,14 @@
             href="https://explorer.hiro.so/address/SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4?chain=mainnet"
             target="_blank"
             rel="noopener noreferrer"
-            >View Contract</a
+            >View NFT Contract</a
+          >
+          |
+          <a
+            href="https://explorer.hiro.so/address/SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.nft-marketplace-v2?chain=mainnet"
+            target="_blank"
+            rel="noopener noreferrer"
+            >View Marketplace Contract</a
           >
         </p>
       </footer>

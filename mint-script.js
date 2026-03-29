@@ -14,7 +14,7 @@ import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 // Configuration - UPDATE THESE
 const CONFIG = {
   CONTRACT_ADDRESS: 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97',
-  CONTRACT_NAME: 'simple-nft-v3',
+  CONTRACT_NAME: 'simple-nft-v4',
   NETWORK: process.env.NETWORK || 'mainnet'
 };
 
@@ -98,8 +98,16 @@ async function main() {
       const result = await mintNFT(privateKey, nonce);
       
       if (result.error) {
-        console.log(`  ❌ Failed: ${result.error}`);
-        results.push({ success: false, error: result.error });
+        const errorMessage = result.reason
+          ? `${result.error} (${result.reason})`
+          : result.error;
+        console.log(`  ❌ Failed: ${errorMessage}`);
+        results.push({
+          success: false,
+          error: errorMessage,
+          reason: result.reason,
+          reasonData: result.reason_data
+        });
       } else {
         console.log(`  ✅ TX: ${result.txid}`);
         results.push({ success: true, txid: result.txid });

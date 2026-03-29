@@ -89,6 +89,36 @@ npm run build
 npm run preview
 ```
 
+## Multi-Wallet Mint Script
+
+Use the bundled multi-wallet script to mint from your 50 pre-generated wallets in:
+`/home/thee1/SpinningB/generated/mainnet-wallets.json`
+
+### Dry run (recommended first)
+
+```bash
+npm run mint:multi:dry
+```
+
+### Run actual mints
+
+```bash
+npm run mint:multi
+```
+
+### Useful overrides
+
+```bash
+# Mint from testnet
+NETWORK=testnet npm run mint:multi
+
+# Mint from a different wallet file
+node multi-wallet-mint.js --wallet-file /path/to/wallets.json
+
+# Limit wallet range / repeat mints per wallet
+WALLET_LIMIT=10 START_INDEX=0 MINTS_PER_WALLET=1 npm run mint:multi
+```
+
 ## License
 
 ISC

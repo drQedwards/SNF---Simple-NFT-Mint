@@ -8,7 +8,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "mint": "node mint-script.js"
+    "mint": "node mint-script.js",
+    "mint:multi": "node multi-wallet-mint.js",
+    "mint:multi:dry": "node multi-wallet-mint.js --dry-run",
+    "market:multi:list": "node multi-wallet-marketplace.js",
+    "market:multi:list:dry": "node multi-wallet-marketplace.js --dry-run"
   },
   "keywords": [
     "nft",
