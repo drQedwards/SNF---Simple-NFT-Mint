@@ -360,8 +360,9 @@ async function fetchMarketplaceStats() {
 
   const listings = readCvNumber(listingsJson);
   const sales = readCvNumber(salesJson);
-  elements.listingCount.textContent = listings.toLocaleString();
-  elements.listingCountDetail.textContent = 'Lifetime listings recorded';
+  elements.listingCount.dataset.totalListings = String(listings);
+  elements.listingCount.textContent = state.marketListings.length.toLocaleString();
+  elements.listingCountDetail.textContent = `Tracking recent listings (${listings.toLocaleString()} lifetime total)`;
   elements.salesCount.textContent = sales.toLocaleString();
   elements.salesCountDetail.textContent = 'Completed purchases on contract';
 }
@@ -564,6 +565,10 @@ function getSortedListings() {
 
 function renderMarketListings() {
   const listings = getSortedListings();
+  const totalListings = Number(elements.listingCount.dataset.totalListings || 0);
+
+  elements.listingCount.textContent = state.marketListings.length.toLocaleString();
+  elements.listingCountDetail.textContent = `Tracking recent listings (${totalListings.toLocaleString()} lifetime total)`;
 
   if (!state.marketListings.length) {
     elements.bestAsk.textContent = '--';
