@@ -822,6 +822,8 @@ function renderMarketListings() {
 
   if (!state.marketListings.length) {
     elements.bestAsk.textContent = '--';
+    elements.averageAsk.textContent = '--';
+    elements.yourListingsCount.textContent = '0';
     elements.scanWindow.textContent = 'No active listings in recent scan';
     elements.marketListings.innerHTML = '<p class="no-nfts">No recent listings found in the latest scan window.</p>';
     return;
