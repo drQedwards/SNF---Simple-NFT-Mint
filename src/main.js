@@ -451,6 +451,13 @@ function updateMintProgress(mintedCount) {
   elements.mintProgressFill.parentElement?.setAttribute('aria-valuenow', String(safe));
   elements.mintedDetail.textContent =
     safe >= CONFIG.MINT_CAP ? 'Collection sold out' : `${(CONFIG.MINT_CAP - safe).toLocaleString()} still available`;
+  elements.supplyOutlook.textContent =
+    ratio >= 80
+      ? 'Late-stage supply, urgency increasing'
+      : ratio >= 40
+        ? 'Mid-collection release with room to mint'
+        : 'Early supply with broad mint availability';
+  elements.mintTempo.textContent = `${ratio.toFixed(1)}% of collection minted`;
 }
 
 async function callReadOnly(contractAddress, contractName, functionName, args = [], sender = contractAddress) {
