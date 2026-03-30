@@ -9,24 +9,28 @@ import {
   PostConditionMode,
 //   getNonce
 } from '@stacks/transactions';
-import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
+import { STACKS_DEVNET, STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 // Configuration - UPDATE THESE
 const CONFIG = {
   CONTRACT_ADDRESS: 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97',
   CONTRACT_NAME: 'simple-nft-v3',
-  NETWORK: process.env.NETWORK || 'mainnet'
+  NETWORK: process.env.NETWORK || 'mainnet',
+  DEVNET_API_URL: process.env.DEVNET_API_URL || 'http://127.0.0.1:3999'
 };
 
 function getNetwork() {
-  return CONFIG.NETWORK === 'mainnet' ? STACKS_MAINNET : STACKS_TESTNET;
+  if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
+  if (CONFIG.NETWORK === 'devnet') return STACKS_DEVNET;
+  return STACKS_TESTNET;
 }
 
 async function getAccountNonce(address) {
-  const network = getNetwork();
   const apiUrl = CONFIG.NETWORK === 'mainnet'
     ? 'https://api.mainnet.hiro.so'
-    : 'https://api.testnet.hiro.so';
+    : CONFIG.NETWORK === 'devnet'
+      ? CONFIG.DEVNET_API_URL
+      : 'https://api.testnet.hiro.so';
   
   const response = await fetch(`${apiUrl}/extended/v1/address/${address}/nonces`);
   const data = await response.json();
@@ -66,7 +70,8 @@ async function main() {
     console.log('  count        Number of NFTs to mint (default: 1)');
     console.log('');
     console.log('Environment:');
-    console.log('  NETWORK      Network to use: mainnet or testnet (default: mainnet)');
+    console.log('  NETWORK      Network to use: mainnet, testnet, or devnet (default: mainnet)');
+    console.log('  DEVNET_API_URL Devnet API base URL (default: http://127.0.0.1:3999)');
     process.exit(1);
   }
   
@@ -81,7 +86,7 @@ async function main() {
   const { getAddressFromPrivateKey, TransactionVersion } = await import('@stacks/transactions');
   const senderAddress = getAddressFromPrivateKey(
     privateKey,
-    CONFIG.NETWORK === 'mainnet' ? 'mainnet' : 'testnet'
+    CONFIG.NETWORK === 'mainnet' ? 'mainnet' : CONFIG.NETWORK === 'devnet' ? 'testnet' : 'testnet'
   );
   console.log(`Sender: ${senderAddress}`);
   

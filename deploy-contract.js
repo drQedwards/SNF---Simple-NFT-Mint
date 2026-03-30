@@ -8,7 +8,7 @@ import {
   AnchorMode,
   PostConditionMode
 } from '@stacks/transactions';
-import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
+import { STACKS_DEVNET, STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 import { generateWallet, getStxAddress } from '@stacks/wallet-sdk';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -20,19 +20,27 @@ const __dirname = dirname(__filename);
 // Configuration
 const CONFIG = {
   NETWORK: process.env.NETWORK || 'mainnet',
-  CONTRACT_NAME: 'simple-nft',
+  CONTRACT_NAME: process.env.CONTRACT_NAME || 'simple-nft-v3',
+  CONTRACT_FILE: process.env.CONTRACT_FILE || 'simple-nft-v3.clar',
+  DEVNET_API_URL: process.env.DEVNET_API_URL || 'http://127.0.0.1:3999',
   MNEMONIC: process.env.STACKS_MNEMONIC
 };
 
 function getNetwork() {
-  return CONFIG.NETWORK === 'mainnet' ? STACKS_MAINNET : STACKS_TESTNET;
+  if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
+  if (CONFIG.NETWORK === 'devnet') return STACKS_DEVNET;
+  return STACKS_TESTNET;
+}
+
+function getApiUrl() {
+  if (CONFIG.NETWORK === 'mainnet') return 'https://api.mainnet.hiro.so';
+  if (CONFIG.NETWORK === 'devnet') return CONFIG.DEVNET_API_URL;
+  return 'https://api.testnet.hiro.so';
 }
 
 async function getAccountNonce(address) {
-  const apiUrl = CONFIG.NETWORK === 'mainnet'
-    ? 'https://api.mainnet.hiro.so'
-    : 'https://api.testnet.hiro.so';
-  
+  const apiUrl = getApiUrl();
+
   const response = await fetch(`${apiUrl}/extended/v1/address/${address}/nonces`);
   const data = await response.json();
   return data.possible_next_nonce;
@@ -63,9 +71,10 @@ async function main() {
   console.log(`Deployer: ${senderAddress}`);
   
   // Read contract source
-  const contractPath = join(__dirname, 'contracts', 'simple-nft.clar');
+  const contractPath = join(__dirname, 'contracts', CONFIG.CONTRACT_FILE);
   const contractSource = readFileSync(contractPath, 'utf8');
   console.log(`Contract: ${CONFIG.CONTRACT_NAME}`);
+  console.log(`Source file: ${CONFIG.CONTRACT_FILE}`);
   console.log(`Contract size: ${contractSource.length} bytes\n`);
   
   // Get nonce
@@ -73,9 +82,7 @@ async function main() {
   console.log(`Nonce: ${nonce}`);
   
   // Check balance
-  const apiUrl = CONFIG.NETWORK === 'mainnet'
-    ? 'https://api.mainnet.hiro.so'
-    : 'https://api.testnet.hiro.so';
+  const apiUrl = getApiUrl();
   
   const balanceRes = await fetch(`${apiUrl}/extended/v1/address/${senderAddress}/stx`);
   const balanceData = await balanceRes.json();
@@ -123,9 +130,12 @@ async function main() {
   console.log('✅ Contract deployment submitted!\n');
   console.log(`Transaction ID: ${txId}`);
   
-  const explorerUrl = CONFIG.NETWORK === 'mainnet'
-    ? `https://explorer.hiro.so/txid/${txId}`
-    : `https://explorer.hiro.so/txid/${txId}?chain=testnet`;
+  const explorerUrl =
+    CONFIG.NETWORK === 'mainnet'
+      ? `https://explorer.hiro.so/txid/${txId}`
+      : CONFIG.NETWORK === 'devnet'
+        ? '(Devnet transaction: open your local Stacks API explorer)'
+        : `https://explorer.hiro.so/txid/${txId}?chain=testnet`;
   
   console.log(`Explorer: ${explorerUrl}\n`);
   
