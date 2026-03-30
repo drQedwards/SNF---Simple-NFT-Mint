@@ -429,6 +429,31 @@ function getUserListingStats() {
   };
 }
 
+function deriveMarketInsights(listings) {
+  if (!listings.length) {
+    return {
+      bestAskMicroStx: null,
+      averageAskMicroStx: null,
+      sellers: 0,
+      userListings: 0,
+    };
+  }
+
+  const total = listings.reduce((sum, listing) => sum + listing.priceMicroStx, 0);
+  const bestAskMicroStx = Math.min(...listings.map((listing) => listing.priceMicroStx));
+  const uniqueSellers = new Set(listings.map((listing) => listing.seller));
+  const userListings = state.userAddress
+    ? listings.filter((listing) => listing.seller === state.userAddress).length
+    : 0;
+
+  return {
+    bestAskMicroStx,
+    averageAskMicroStx: Math.floor(total / listings.length),
+    sellers: uniqueSellers.size,
+    userListings,
+  };
+}
+
 async function fetchMintedCount() {
   const json = await callReadOnly(CONFIG.NFT_CONTRACT_ADDRESS, CONFIG.NFT_CONTRACT_NAME, 'get-total-minted');
   const mintedCount = readCvNumber(json);
