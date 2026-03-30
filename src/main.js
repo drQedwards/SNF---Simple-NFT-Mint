@@ -256,7 +256,14 @@ function addActivity(type, message, txId = null) {
 function renderActivityFeed() {
   if (!elements.activityFeed) return;
 
-  const activity = loadActivity();
+  const activity = loadActivity().filter((entry) => {
+    if (state.activityFilter === 'all') return true;
+    if (state.activityFilter === 'wallet') {
+      return entry.type === 'Wallet' || entry.type === 'Theme' || entry.type === 'Refresh';
+    }
+
+    return ['Mint', 'List', 'Buy', 'Cancel'].includes(entry.type);
+  });
   if (!activity.length) {
     elements.activityFeed.innerHTML = '<li class="activity-empty">No activity yet.</li>';
     return;
