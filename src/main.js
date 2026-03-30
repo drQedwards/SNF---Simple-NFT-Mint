@@ -1069,6 +1069,20 @@ function bindEvents() {
     savePreferences(getPreferences());
   });
   elements.defaultListPrice?.addEventListener('change', () => savePreferences(getPreferences()));
+  elements.priceLabInput?.addEventListener('input', renderPriceLab);
+  elements.matchFloorBtn?.addEventListener('click', () => {
+    if (!state.marketInsights?.bestAskMicroStx) return;
+    const floor = microToStx(state.marketInsights.bestAskMicroStx);
+    elements.priceLabInput.value = floor.toFixed(4);
+    renderPriceLab();
+  });
+  elements.undercutFloorBtn?.addEventListener('click', () => {
+    if (!state.marketInsights?.bestAskMicroStx) return;
+    const floor = microToStx(state.marketInsights.bestAskMicroStx);
+    const undercut = Math.max(floor - 0.0005, 0.0014);
+    elements.priceLabInput.value = undercut.toFixed(4);
+    renderPriceLab();
+  });
   elements.autoRefresh?.addEventListener('change', (event) => {
     const enabled = Boolean(event.target.checked);
     setAutoRefresh(enabled);
