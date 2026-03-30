@@ -707,15 +707,16 @@ function renderNFTList() {
   elements.nftList.innerHTML = filtered
     .map((nft) => {
       const tokenId = getTokenIdFromHolding(nft) || '?';
+      const activeListing = state.marketListings.find((listing) => String(listing.tokenId) === String(tokenId) && listing.seller === state.userAddress);
       return `
         <article class="nft-card">
           <div class="nft-image"></div>
           <div>
             <span class="nft-id">Token #${tokenId}</span>
-            <span class="market-meta">Owned by connected wallet</span>
+            <span class="market-meta">${activeListing ? `Listed at ${formatStxFromMicro(activeListing.priceMicroStx)}` : 'Owned by connected wallet'}</span>
           </div>
           <a class="btn btn-secondary" href="${formatTokenUrl(tokenId)}" target="_blank" rel="noopener noreferrer">View Explorer</a>
-          <button class="btn btn-primary list-nft-btn" data-token-id="${tokenId}" type="button">List for Sale</button>
+          <button class="btn btn-primary list-nft-btn" data-token-id="${tokenId}" type="button">${activeListing ? 'Update Strategy' : 'List for Sale'}</button>
         </article>
       `;
     })
