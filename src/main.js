@@ -218,6 +218,7 @@ function loadPreferences() {
     autoRefresh: true,
     defaultListPrice: '0.01',
     marketSort: 'recent',
+    priceLabInput: '0.01',
   });
 }
 
@@ -230,6 +231,7 @@ function getPreferences() {
     autoRefresh: Boolean(elements.autoRefresh?.checked),
     defaultListPrice: elements.defaultListPrice?.value || '0.01',
     marketSort: elements.marketSort?.value || 'recent',
+    priceLabInput: elements.priceLabInput?.value || '0.01',
   };
 }
 
