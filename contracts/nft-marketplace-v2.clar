@@ -1,7 +1,7 @@
 ;; NFT Marketplace Contract v2
 ;; Allows listing, buying, and selling NFTs
 ;; Fees: List = 0.0013 STX, Buy = 0.0013 STX (included in price)
-;; Contract Owner: SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97
+;; Contract Owner: SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8
 
 ;; Constants
 (define-constant CONTRACT_OWNER tx-sender)
@@ -68,7 +68,7 @@
     (asserts! (not (is-listed token-id)) ERR_ALREADY_LISTED)
     (try! (stx-transfer? LIST_FEE seller CONTRACT_OWNER))
     ;; Direct contract call with full principal
-    (try! (contract-call? 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4 transfer token-id seller (as-contract tx-sender)))
+    (try! (contract-call? 'SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8.simple-nft-v4 transfer token-id seller (as-contract tx-sender)))
     (map-set listings token-id {seller: seller, price: price})
     (var-set total-fees-collected (+ (var-get total-fees-collected) LIST_FEE))
     (var-set total-listings (+ (var-get total-listings) u1))
@@ -90,7 +90,7 @@
     (try! (stx-transfer? SALE_FEE buyer CONTRACT_OWNER))
     (try! (stx-transfer? seller-amount buyer seller))
     ;; Direct contract call with full principal
-    (try! (as-contract (contract-call? 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4 transfer token-id tx-sender buyer)))
+    (try! (as-contract (contract-call? 'SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8.simple-nft-v4 transfer token-id tx-sender buyer)))
     (map-delete listings token-id)
     (var-set total-fees-collected (+ (var-get total-fees-collected) SALE_FEE))
     (var-set total-sales (+ (var-get total-sales) u1))
@@ -107,7 +107,7 @@
     )
     (asserts! (is-eq tx-sender seller) ERR_NOT_OWNER)
     ;; Direct contract call with full principal
-    (try! (as-contract (contract-call? 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4 transfer token-id tx-sender seller)))
+    (try! (as-contract (contract-call? 'SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8.simple-nft-v4 transfer token-id tx-sender seller)))
     (map-delete listings token-id)
     (ok token-id)
   )
