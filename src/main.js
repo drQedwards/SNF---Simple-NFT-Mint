@@ -432,6 +432,16 @@ function renderPriceLab() {
   }
 }
 
+function renderMintDesk() {
+  if (!state.stxQuote) {
+    elements.mintUsdEstimate.textContent = 'Awaiting STX quote';
+    return;
+  }
+
+  const mintUsd = microToStx(CONFIG.MINT_PRICE) * state.stxQuote;
+  elements.mintUsdEstimate.textContent = `${formatStxFromMicro(CONFIG.MINT_PRICE)} | ${formatUsd(mintUsd)}`;
+}
+
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
