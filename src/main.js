@@ -348,11 +348,16 @@ function setWalletSignals() {
     elements.walletAddress.textContent = formatFullAddress(state.userAddress);
     elements.walletAddress.title = state.userAddress;
     elements.walletChip.textContent = 'Live';
+    elements.walletSessionState.textContent = 'Approved';
+    elements.walletReadiness.textContent = 'Wallet connected and ready for execution';
   } else {
     elements.walletState.textContent = 'Waiting for wallet';
     elements.walletStateDetail.textContent = 'Connect Leather or Xverse to unlock mint and market actions.';
     elements.walletAddress.textContent = 'Not connected';
     elements.walletAddress.title = '';
+    elements.walletChip.textContent = 'Idle';
+    elements.walletSessionState.textContent = 'Standby';
+    elements.walletReadiness.textContent = 'Connect to unlock desk tools';
   }
 }
 
