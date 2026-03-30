@@ -35,8 +35,18 @@ function validateConfig() {
 }
 
 function getNetwork() {
+  // Keep transaction network client aligned with API reads (nonce/balance),
+  // especially when DEVNET_API_URL points to a remote/shared devnet.
   if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
-  if (CONFIG.NETWORK === 'devnet') return STACKS_DEVNET;
+  if (CONFIG.NETWORK === 'devnet') {
+    return {
+      ...STACKS_DEVNET,
+      url: CONFIG.DEVNET_API_URL,
+      client: STACKS_DEVNET.client
+        ? { ...STACKS_DEVNET.client, baseUrl: CONFIG.DEVNET_API_URL }
+        : STACKS_DEVNET.client
+    };
+  }
   return STACKS_TESTNET;
 }
 

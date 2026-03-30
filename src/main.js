@@ -90,7 +90,15 @@ function getApiUrl() {
 
 function getStacksNetwork() {
   if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
-  if (CONFIG.NETWORK === 'devnet') return STACKS_DEVNET;
+  if (CONFIG.NETWORK === 'devnet') {
+    return {
+      ...STACKS_DEVNET,
+      url: CONFIG.DEVNET_API_URL,
+      client: STACKS_DEVNET.client
+        ? { ...STACKS_DEVNET.client, baseUrl: CONFIG.DEVNET_API_URL }
+        : STACKS_DEVNET.client,
+    };
+  }
   return STACKS_TESTNET;
 }
 
