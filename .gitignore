@@ -44,3 +44,4 @@ deploy-marketplace.js
 
 # Transfer results
 transfer-results-*.json
+multi-wallet-marketplace-report-*.json

@@ -1,8 +1,8 @@
 import './styles/stacks-vivid-theme.css';
 
 import { createAppKit } from '@reown/appkit';
-import { AppConfig, UserSession, showConnect, openContractCall } from '@stacks/connect';
-import { deserializeCV, cvToValue, uintCV } from '@stacks/transactions';
+import { AppConfig, UserSession, openContractCall, showConnect } from '@stacks/connect';
+import { cvToJSON, deserializeCV, uintCV } from '@stacks/transactions';
 import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 const CONFIG = {
@@ -57,6 +57,75 @@ const elements = {
   mintProgressLabel: document.getElementById('mint-progress-label'),
 };
 
+const elements = {
+  connectBtn: document.getElementById('connect-btn'),
+  mintBtn: document.getElementById('mint-btn'),
+  disconnectBtn: document.getElementById('disconnect-btn'),
+  copyAddressBtn: document.getElementById('copy-address-btn'),
+  refreshBtn: document.getElementById('refresh-btn'),
+  heroConnectBtn: document.getElementById('hero-connect-btn'),
+  heroMarketBtn: document.getElementById('hero-market-btn'),
+  themeToggle: document.getElementById('theme-toggle'),
+  autoRefresh: document.getElementById('auto-refresh'),
+  nftFilter: document.getElementById('nft-filter'),
+  marketFilter: document.getElementById('market-filter'),
+  marketSort: document.getElementById('market-sort'),
+  defaultListPrice: document.getElementById('default-list-price'),
+  priceLabInput: document.getElementById('price-lab-input'),
+  matchFloorBtn: document.getElementById('match-floor-btn'),
+  undercutFloorBtn: document.getElementById('undercut-floor-btn'),
+  applyPriceLabBtn: document.getElementById('apply-price-lab-btn'),
+  clearActivityBtn: document.getElementById('clear-activity-btn'),
+  notConnected: document.getElementById('not-connected'),
+  connected: document.getElementById('connected'),
+  walletAddress: document.getElementById('wallet-address'),
+  walletChip: document.getElementById('wallet-chip'),
+  walletSessionState: document.getElementById('wallet-session-state'),
+  nextSyncLabel: document.getElementById('next-sync-label'),
+  walletState: document.getElementById('wallet-state'),
+  walletStateDetail: document.getElementById('wallet-state-detail'),
+  dashboardSync: document.getElementById('dashboard-sync'),
+  dashboardSyncDetail: document.getElementById('dashboard-sync-detail'),
+  marketPulse: document.getElementById('market-pulse'),
+  marketPulseDetail: document.getElementById('market-pulse-detail'),
+  minted: document.getElementById('minted'),
+  mintedDetail: document.getElementById('minted-detail'),
+  mintUsdEstimate: document.getElementById('mint-usd-estimate'),
+  mintTempo: document.getElementById('mint-tempo'),
+  listed: document.getElementById('listed'),
+  ownedCount: document.getElementById('owned-count'),
+  ownedListedCount: document.getElementById('owned-listed-count'),
+  readyToListCount: document.getElementById('ready-to-list-count'),
+  portfolioDetail: document.getElementById('portfolio-detail'),
+  listingCount: document.getElementById('listing-count'),
+  listingCountDetail: document.getElementById('listing-count-detail'),
+  salesCount: document.getElementById('sales-count'),
+  salesCountDetail: document.getElementById('sales-count-detail'),
+  stxPrice: document.getElementById('stx-price'),
+  stxPriceUpdated: document.getElementById('stx-price-updated'),
+  networkStatus: document.getElementById('network-status'),
+  networkHeight: document.getElementById('network-height'),
+  status: document.getElementById('status'),
+  nftList: document.getElementById('nft-list'),
+  marketListings: document.getElementById('market-listings'),
+  marketSummary: document.getElementById('market-summary'),
+  bestAsk: document.getElementById('best-ask'),
+  averageAsk: document.getElementById('average-ask'),
+  yourListingsCount: document.getElementById('your-listings-count'),
+  scanWindow: document.getElementById('scan-window'),
+  activityFeed: document.getElementById('activity-feed'),
+  activityFilters: Array.from(document.querySelectorAll('[data-activity-filter]')),
+  estimatedNet: document.getElementById('estimated-net'),
+  priceLabStance: document.getElementById('price-lab-stance'),
+  supplyOutlook: document.getElementById('supply-outlook'),
+  listingStrategy: document.getElementById('listing-strategy'),
+  walletReadiness: document.getElementById('wallet-readiness'),
+  recommendedListPrice: document.getElementById('recommended-list-price'),
+  coverageNote: document.getElementById('coverage-note'),
+  mintProgressFill: document.getElementById('mint-progress-fill'),
+  mintProgressLabel: document.getElementById('mint-progress-label'),
+};
+
 function initAppKit() {
   try {
     appKit = createAppKit({
@@ -104,6 +173,20 @@ function showStatus(message, type = 'info') {
   elements.status.className = `status ${type}`;
   elements.status.innerHTML = message;
   elements.status.classList.remove('hidden');
+
+  if (!persist && type !== 'error') {
+    state.statusTimer = window.setTimeout(() => {
+      hideStatus();
+    }, 4500);
+  }
+}
+
+function setButtonBusy(button, isBusy, idleLabel, busyLabel) {
+  if (!button) return;
+
+  button.textContent = isBusy ? busyLabel : idleLabel;
+  button.classList.toggle('loading', isBusy);
+  button.disabled = isBusy;
 }
 
 function hideStatus() {
@@ -212,6 +295,50 @@ function updateMintProgress(mintedCount) {
 }
 
 async function fetchMintedCount() {
+  const json = await callReadOnly(CONFIG.NFT_CONTRACT_ADDRESS, CONFIG.NFT_CONTRACT_NAME, 'get-total-minted');
+  const mintedCount = readCvNumber(json);
+  elements.minted.textContent = mintedCount.toLocaleString();
+  updateMintProgress(mintedCount);
+  return mintedCount;
+}
+
+async function fetchMarketplaceStats() {
+  const [listingsJson, salesJson] = await Promise.all([
+    callReadOnly(CONFIG.MARKETPLACE_CONTRACT_ADDRESS, CONFIG.MARKETPLACE_CONTRACT_NAME, 'get-total-listings'),
+    callReadOnly(CONFIG.MARKETPLACE_CONTRACT_ADDRESS, CONFIG.MARKETPLACE_CONTRACT_NAME, 'get-total-sales'),
+  ]);
+
+  const listings = readCvNumber(listingsJson);
+  const sales = readCvNumber(salesJson);
+  elements.listingCount.dataset.totalListings = String(listings);
+  elements.listingCount.textContent = state.marketListings.length.toLocaleString();
+  elements.listingCountDetail.textContent = `Tracking recent listings (${listings.toLocaleString()} lifetime total)`;
+  elements.salesCount.textContent = sales.toLocaleString();
+  elements.salesCountDetail.textContent = 'Completed purchases on contract';
+}
+
+async function fetchNetworkStatus() {
+  try {
+    const response = await fetch(`${getApiUrl()}/v2/info`);
+    if (!response.ok) {
+      throw new Error(`Status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const tip = data.stacks_tip_height ?? data.burn_block_height ?? '--';
+
+    elements.networkStatus.textContent = 'Online';
+    elements.networkStatus.style.color = 'var(--ok)';
+    elements.networkHeight.textContent = `Tip: ${tip}`;
+  } catch (error) {
+    console.error('Failed to fetch network status:', error);
+    elements.networkStatus.textContent = 'Degraded';
+    elements.networkStatus.style.color = 'var(--warning)';
+    elements.networkHeight.textContent = 'Tip unavailable';
+  }
+}
+
+async function fetchStxPrice() {
   try {
     const response = await fetch(
       `${getApiUrl()}/v2/contracts/call-read/${CONFIG.NFT_CONTRACT_ADDRESS}/${CONFIG.NFT_CONTRACT_NAME}/get-total-minted`,
@@ -371,6 +498,41 @@ function renderNFTList() {
         listNFT(tokenId);
       }
     });
+  }, CONFIG.AUTO_REFRESH_MS);
+
+  state.refreshTickTimer = setInterval(updateRefreshCountdown, 1000);
+  updateRefreshCountdown();
+}
+
+async function connectWallet() {
+  setButtonBusy(elements.connectBtn, true, 'Connect Wallet', 'Opening Wallet');
+  setButtonBusy(elements.heroConnectBtn, true, 'Connect and Start', 'Opening Wallet');
+  showStatus('Opening wallet...', 'info');
+
+  showConnect({
+    appDetails: {
+      name: CONFIG.APP_NAME,
+      icon: CONFIG.APP_ICON,
+    },
+    redirectTo: '/',
+    onFinish: async () => {
+      const userData = userSession.loadUserData();
+      state.userAddress =
+        CONFIG.NETWORK === 'mainnet' ? userData.profile.stxAddress.mainnet : userData.profile.stxAddress.testnet;
+      setWalletSignals();
+      addActivity('Wallet', 'Wallet connected.');
+      showStatus('Connected to wallet.', 'success');
+      setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
+      setButtonBusy(elements.heroConnectBtn, false, 'Connect and Start', 'Opening Wallet');
+      setWalletSignals();
+      await refreshDashboard();
+    },
+    onCancel: () => {
+      showStatus('Connection canceled.', 'error', { persist: true });
+      setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
+      setButtonBusy(elements.heroConnectBtn, false, 'Connect and Start', 'Opening Wallet');
+    },
+    userSession,
   });
 }
 
