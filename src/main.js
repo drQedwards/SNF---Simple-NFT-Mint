@@ -821,7 +821,9 @@ async function refreshDashboard({ withStatus = false } = {}) {
     await fetchRecentListings(mintedCount, { silent: true });
 
     const completedAt = new Date();
+    state.lastRefreshAt = completedAt.getTime();
     updateSyncStatus('Live data synced', `Last refresh ${formatRelativeTime(completedAt)}`);
+    updateRefreshCountdown();
 
     if (withStatus) {
       showStatus('Dashboard refreshed successfully.', 'success');
@@ -847,6 +849,10 @@ function clearAutoRefresh() {
 
 function setAutoRefresh(enabled) {
   clearAutoRefresh();
+  if (state.refreshTickTimer) {
+    clearInterval(state.refreshTickTimer);
+    state.refreshTickTimer = null;
+  }
   if (!enabled) return;
 
   state.autoRefreshTimer = setInterval(() => {
@@ -854,6 +860,9 @@ function setAutoRefresh(enabled) {
       console.error('Auto refresh failed:', error);
     });
   }, CONFIG.AUTO_REFRESH_MS);
+
+  state.refreshTickTimer = setInterval(updateRefreshCountdown, 1000);
+  updateRefreshCountdown();
 }
 
 async function connectWallet() {
