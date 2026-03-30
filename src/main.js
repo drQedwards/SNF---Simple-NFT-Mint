@@ -379,6 +379,34 @@ function renderMarketPulse() {
   elements.marketPulseDetail.textContent = `${state.marketListings.length.toLocaleString()} active listings from ${state.marketInsights.sellers.toLocaleString()} sellers in the scan window.`;
 }
 
+function renderPriceLab() {
+  const inputValue = Number.parseFloat(elements.priceLabInput?.value || '');
+  const feeStx = microToStx(CONFIG.LIST_FEE);
+
+  if (!Number.isFinite(inputValue)) {
+    elements.estimatedNet.textContent = '--';
+    elements.priceLabStance.textContent = 'Enter a valid STX price';
+    return;
+  }
+
+  const net = Math.max(inputValue - feeStx, 0);
+  elements.estimatedNet.textContent = formatStxValue(net);
+
+  if (!state.marketInsights?.bestAskMicroStx) {
+    elements.priceLabStance.textContent = 'Waiting for listings';
+    return;
+  }
+
+  const floor = microToStx(state.marketInsights.bestAskMicroStx);
+  if (inputValue < floor) {
+    elements.priceLabStance.textContent = 'Aggressive undercut versus current floor';
+  } else if (inputValue === floor) {
+    elements.priceLabStance.textContent = 'Matching the current floor';
+  } else {
+    elements.priceLabStance.textContent = `Premium of ${(inputValue - floor).toFixed(4)} STX over floor`;
+  }
+}
+
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
