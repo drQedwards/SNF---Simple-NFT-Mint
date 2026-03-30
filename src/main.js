@@ -268,7 +268,13 @@ function renderActivityFeed() {
     return ['Mint', 'List', 'Buy', 'Cancel'].includes(entry.type);
   });
   if (!activity.length) {
-    elements.activityFeed.innerHTML = '<li class="activity-empty">No activity yet.</li>';
+    const emptyMessage =
+      state.activityFilter === 'all'
+        ? 'No activity yet.'
+        : state.activityFilter === 'wallet'
+          ? 'No wallet or dashboard events recorded yet.'
+          : 'No minting or marketplace events recorded yet.';
+    elements.activityFeed.innerHTML = `<li class="activity-empty">${emptyMessage}</li>`;
     return;
   }
 
