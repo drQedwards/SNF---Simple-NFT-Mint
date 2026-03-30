@@ -603,6 +603,13 @@ h1 {
   margin-bottom: 16px;
 }
 
+.portfolio-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
 .portfolio-filter,
 .list-config {
   display: grid;
@@ -702,6 +709,18 @@ h1 {
 
 .activity-head small {
   color: var(--text-muted);
+}
+
+.activity-controls,
+.price-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price-lab {
+  display: grid;
+  gap: 14px;
 }
 
 .activity-feed {
