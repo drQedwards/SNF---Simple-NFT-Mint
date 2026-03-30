@@ -731,6 +731,13 @@ h1 {
   gap: 14px;
 }
 
+.pricing-panel {
+  background:
+    radial-gradient(circle at top right, color-mix(in oklab, var(--accent-2), transparent 86%), transparent 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%),
+    var(--surface-elevated);
+}
+
 .activity-feed {
   display: grid;
   gap: 10px;
