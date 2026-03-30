@@ -165,6 +165,31 @@ function formatStxFromMicro(value) {
   return `${(Number(value) / 1_000_000).toFixed(4)} STX`;
 }
 
+function formatStxValue(value, digits = 4) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return '--';
+  return `${numeric.toFixed(digits)} STX`;
+}
+
+function microToStx(value) {
+  return Number(value) / 1_000_000;
+}
+
+function stxToMicro(value) {
+  return Math.floor(Number(value) * 1_000_000);
+}
+
+function formatUsd(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return '--';
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: numeric >= 100 ? 0 : 2,
+  }).format(numeric);
+}
+
 function formatRelativeTime(dateValue) {
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return 'Unknown time';
