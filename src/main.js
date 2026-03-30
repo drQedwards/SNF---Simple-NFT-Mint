@@ -1134,6 +1134,7 @@ async function copyAddress() {
   try {
     await navigator.clipboard.writeText(state.userAddress);
     showStatus('Wallet address copied.', 'success');
+    addActivity('Wallet', 'Copied wallet address.');
   } catch (error) {
     console.error('Failed to copy address:', error);
     showStatus('Could not copy address from this browser context.', 'error', { persist: true });
