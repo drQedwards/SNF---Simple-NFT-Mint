@@ -940,6 +940,7 @@ function setAutoRefresh(enabled) {
 
 async function connectWallet() {
   setButtonBusy(elements.connectBtn, true, 'Connect Wallet', 'Opening Wallet');
+  setButtonBusy(elements.heroConnectBtn, true, 'Connect and Start', 'Opening Wallet');
   showStatus('Opening wallet...', 'info');
 
   showConnect({
@@ -956,11 +957,14 @@ async function connectWallet() {
       addActivity('Wallet', 'Wallet connected.');
       showStatus('Connected to wallet.', 'success');
       setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
+      setButtonBusy(elements.heroConnectBtn, false, 'Connect and Start', 'Opening Wallet');
+      setWalletSignals();
       await refreshDashboard();
     },
     onCancel: () => {
       showStatus('Connection canceled.', 'error', { persist: true });
       setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
+      setButtonBusy(elements.heroConnectBtn, false, 'Connect and Start', 'Opening Wallet');
     },
     userSession,
   });
