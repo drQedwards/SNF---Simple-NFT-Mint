@@ -116,9 +116,9 @@ a:focus-visible {
 .page-shell {
   position: relative;
   z-index: 1;
-  width: min(1240px, 92vw);
+  width: min(1280px, 92vw);
   margin: 0 auto;
-  padding: 28px 0 56px;
+  padding: 34px 0 64px;
 }
 
 .topbar,
@@ -137,7 +137,7 @@ a:focus-visible {
   justify-content: space-between;
   align-items: flex-start;
   gap: 24px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .brand-lockup {
@@ -199,7 +199,7 @@ h1 {
 
 .subtitle {
   max-width: 60ch;
-  margin-top: 12px;
+  margin-top: 14px;
   line-height: 1.65;
 }
 
@@ -208,6 +208,34 @@ h1 {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.trust-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.trust-pill {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  box-shadow: var(--shadow-soft);
+}
+
+.trust-pill strong {
+  font-size: 0.95rem;
+}
+
+.trust-label {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
 }
 
 .hero-grid {
