@@ -329,6 +329,12 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.market-pulse-card {
+  background:
+    radial-gradient(circle at top right, color-mix(in oklab, var(--accent-1), transparent 82%), transparent 46%),
+    var(--surface-soft);
+}
+
 .signal-card.emphasis {
   background:
     radial-gradient(circle at top right, color-mix(in oklab, var(--accent-3), transparent 72%), transparent 56%),
