@@ -1175,12 +1175,16 @@ function bindEvents() {
     savePreferences(getPreferences());
   });
   elements.defaultListPrice?.addEventListener('change', () => savePreferences(getPreferences()));
-  elements.priceLabInput?.addEventListener('input', renderPriceLab);
+  elements.priceLabInput?.addEventListener('input', () => {
+    renderPriceLab();
+    savePreferences(getPreferences());
+  });
   elements.matchFloorBtn?.addEventListener('click', () => {
     if (!state.marketInsights?.bestAskMicroStx) return;
     const floor = microToStx(state.marketInsights.bestAskMicroStx);
     elements.priceLabInput.value = floor.toFixed(4);
     renderPriceLab();
+    savePreferences(getPreferences());
   });
   elements.undercutFloorBtn?.addEventListener('click', () => {
     if (!state.marketInsights?.bestAskMicroStx) return;
@@ -1188,6 +1192,7 @@ function bindEvents() {
     const undercut = Math.max(floor - 0.0005, 0.0014);
     elements.priceLabInput.value = undercut.toFixed(4);
     renderPriceLab();
+    savePreferences(getPreferences());
   });
   elements.autoRefresh?.addEventListener('change', (event) => {
     const enabled = Boolean(event.target.checked);
@@ -1206,6 +1211,9 @@ function applyPersistedPreferences() {
   }
   if (elements.marketSort && prefs.marketSort) {
     elements.marketSort.value = prefs.marketSort;
+  }
+  if (elements.priceLabInput && prefs.priceLabInput) {
+    elements.priceLabInput.value = prefs.priceLabInput;
   }
 }
 
