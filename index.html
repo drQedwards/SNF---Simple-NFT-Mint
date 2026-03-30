@@ -327,8 +327,16 @@
       <section class="lower-grid">
         <section class="panel reveal">
           <div class="activity-head">
-            <h3>Recent Activity</h3>
-            <small>Stored in your browser</small>
+            <div>
+              <h3>Recent Activity</h3>
+              <small>Stored in your browser</small>
+            </div>
+            <div class="activity-controls">
+              <button class="chip-btn is-active" data-activity-filter="all" type="button">All</button>
+              <button class="chip-btn" data-activity-filter="wallet" type="button">Wallet</button>
+              <button class="chip-btn" data-activity-filter="market" type="button">Market</button>
+              <button id="clear-activity-btn" class="chip-btn" type="button">Clear</button>
+            </div>
           </div>
           <ul id="activity-feed" class="activity-feed">
             <li class="activity-empty">No activity yet.</li>
