@@ -666,6 +666,9 @@ async function fetchRecentListings(latestMintedCount, { silent = false } = {}) {
   }
 
   state.marketListings = listings;
+  state.marketInsights = deriveMarketInsights(listings);
+  renderMarketPulse();
+  renderPortfolioSummary();
   renderMarketListings();
 }
 
