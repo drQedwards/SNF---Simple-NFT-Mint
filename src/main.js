@@ -697,6 +697,7 @@ async function fetchRecentListings(latestMintedCount, { silent = false } = {}) {
   state.marketInsights = deriveMarketInsights(listings);
   renderMarketPulse();
   renderPortfolioSummary();
+  renderPriceLab();
   renderMarketListings();
 }
 
@@ -1096,6 +1097,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderActivityFeed();
   setWalletSignals();
   renderNFTList();
+  renderPriceLab();
   renderMarketListings();
 
   setAutoRefresh(Boolean(elements.autoRefresh?.checked));
