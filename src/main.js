@@ -700,9 +700,12 @@ function getSortedListings() {
 function renderMarketListings() {
   const listings = getSortedListings();
   const totalListings = Number(elements.listingCount.dataset.totalListings || 0);
+  const insights = state.marketInsights || deriveMarketInsights(state.marketListings);
 
   elements.listingCount.textContent = state.marketListings.length.toLocaleString();
   elements.listingCountDetail.textContent = `Tracking recent listings (${totalListings.toLocaleString()} lifetime total)`;
+  elements.averageAsk.textContent = insights.averageAskMicroStx ? formatStxFromMicro(insights.averageAskMicroStx) : '--';
+  elements.yourListingsCount.textContent = insights.userListings.toLocaleString();
 
   if (!state.marketListings.length) {
     elements.bestAsk.textContent = '--';
@@ -711,8 +714,7 @@ function renderMarketListings() {
     return;
   }
 
-  const bestAskValue = Math.min(...state.marketListings.map((listing) => listing.priceMicroStx));
-  elements.bestAsk.textContent = formatStxFromMicro(bestAskValue);
+  elements.bestAsk.textContent = formatStxFromMicro(insights.bestAskMicroStx);
   elements.scanWindow.textContent = `Last ${CONFIG.MARKET_SCAN_LIMIT} minted tokens scanned`;
 
   if (!listings.length) {
