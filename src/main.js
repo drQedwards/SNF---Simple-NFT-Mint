@@ -1141,8 +1141,24 @@ function bindEvents() {
   elements.refreshBtn?.addEventListener('click', () => {
     refreshDashboard({ withStatus: true });
   });
+  elements.heroConnectBtn?.addEventListener('click', connectWallet);
+  elements.heroMarketBtn?.addEventListener('click', () => {
+    elements.marketSummary?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
   elements.nftFilter?.addEventListener('input', renderNFTList);
   elements.marketFilter?.addEventListener('input', renderMarketListings);
+  elements.activityFilters.forEach((button) => {
+    button.addEventListener('click', () => {
+      state.activityFilter = button.dataset.activityFilter || 'all';
+      elements.activityFilters.forEach((item) => item.classList.toggle('is-active', item === button));
+      renderActivityFeed();
+    });
+  });
+  elements.clearActivityBtn?.addEventListener('click', () => {
+    saveActivity([]);
+    renderActivityFeed();
+    showStatus('Stored activity cleared.', 'success');
+  });
   elements.marketSort?.addEventListener('change', () => {
     renderMarketListings();
     savePreferences(getPreferences());
