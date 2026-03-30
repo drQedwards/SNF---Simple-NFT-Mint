@@ -46,6 +46,13 @@ npm run dev
 
 Visit http://localhost:3000
 
+## Dashboard Notes
+
+- The frontend reads contract data from Hiro mainnet endpoints by default.
+- Activity history, theme selection, auto-refresh preference, and price lab inputs are stored in browser local storage.
+- The price lab uses the current floor from the recent market scan window, not the full contract history.
+- The marketplace view scans the most recent 24 minted token IDs for active listings to keep the desk responsive.
+
 ## Contract Details
 
 ### NFT Contract Functions
