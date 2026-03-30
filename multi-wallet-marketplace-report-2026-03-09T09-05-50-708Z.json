@@ -1,0 +1,313 @@
+{
+  "network": "mainnet",
+  "marketplace": "SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.nft-marketplace-v2",
+  "nftAssetIdentifier": "SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4::simple-nft",
+  "listPriceMicroStx": "50000",
+  "walletFile": "/home/thee1/SpinningB/generated/mainnet-wallets.json",
+  "selectedWallets": 50,
+  "successCount": 48,
+  "failCount": 2,
+  "createdAt": "2026-03-09T09:05:50.708Z",
+  "results": [
+    {
+      "address": "SP3KTZM9BVZ0Z0BX90BP65FX74PJ2NJ3CFNXNRJ37",
+      "tokenId": "225",
+      "success": true,
+      "txid": "169607ea3dbbc59cdc5379353d1794a97fc0bd9fbcc8c9f04ee3d6fbeabf3611"
+    },
+    {
+      "address": "SPZQGY6H38N82Z851JCPSPHTV86RRRRPCKFYMCRJ",
+      "tokenId": "226",
+      "success": true,
+      "txid": "dbf66d029cb029df7b7e7728dd07eea73f105e6873d291414625b5f878ad06e9"
+    },
+    {
+      "address": "SP3FPZXZ36DG3G3XVJ0H3K91ZRA7CTZ5PMWAKCP87",
+      "tokenId": "227",
+      "success": true,
+      "txid": "f13769d797a1502e487fb8ec1ae07f4bef514eff1d9fa9ae77a6f5337ba64558"
+    },
+    {
+      "address": "SPJK8SK2207EVEGERZE3ZAQWHMZCMHJJ5SE8HN4R",
+      "tokenId": "228",
+      "success": true,
+      "txid": "4d864587531a2854719c8019a0121b7ab0ee6bd6b7b8796a0ac5c25c708d479f"
+    },
+    {
+      "address": "SP3MDYGWSWVKWGDY3E19GTGM0G7WS8191ASEPM35M",
+      "tokenId": "229",
+      "success": true,
+      "txid": "02cefa8b6fbd6981dc8a7af1ce126907299d4a646070a39afb9602686515b911"
+    },
+    {
+      "address": "SP1EK02HNGRE56ADK4Y057GD03N2590WY1QFMW55X",
+      "tokenId": "230",
+      "success": true,
+      "txid": "038d74c319cfa0c078d128816e419b7bde64541a4cf7cb20403b700add00ea9f"
+    },
+    {
+      "address": "SP5HKJCF0AJ45CZTDCJ9CMW1WFBVX3G35XGCEA7G",
+      "tokenId": "231",
+      "success": true,
+      "txid": "fb2d8b8304db895e24a1b8307d818347a7fa15ce32a745e90fcec60d83b268c7"
+    },
+    {
+      "address": "SP3JPYPRQX844907DYX0T7P937XJDTX40Q5Z3PCAD",
+      "tokenId": "232",
+      "success": true,
+      "txid": "434a84b2546830bedb4d7a461d5d53e08b07618b9354f9756c8efd4868f4e7d5"
+    },
+    {
+      "address": "SP1564SHXHPCWD3C4PNZNKJZP85QEEV381JWSBFQH",
+      "tokenId": "233",
+      "success": true,
+      "txid": "a778dd859cabf0c20bfdadb4e170a3fbe8e0cf5882021747cc7265c75a2064fd"
+    },
+    {
+      "address": "SP18YDP11CBE232VGHPM4M9APZ271X96CMBHZG0XQ",
+      "tokenId": "234",
+      "success": true,
+      "txid": "2bd7d140de3a7d4101dfd3f090b317e0977c7dc76d61df174ac6911fc1310312"
+    },
+    {
+      "address": "SP372PNK4T77QZV03NYSWY8ZGHK35HR36DFS99FMD",
+      "tokenId": "235",
+      "success": true,
+      "txid": "6f59cd1af38517893fdb8a51d1045691e8472798ce484795ab371ad3093d10ee"
+    },
+    {
+      "address": "SP3TQVEMSHVDM9DXP65F3G00E240CGAF366RCMYKJ",
+      "tokenId": "236",
+      "success": true,
+      "txid": "69f776a224af17646fce4e2848679e009a1686238085fb86a292ffcbce72cb58"
+    },
+    {
+      "address": "SP3ERXSZBZHC6SVZCXDN98TDJ9QYJBXQM2NRWE4JF",
+      "tokenId": "237",
+      "success": true,
+      "txid": "0c55be0fb80c518196b162135f1cd4081760948be99498c0b9273ac3b10f8163"
+    },
+    {
+      "address": "SPDAQFSN0RYTY5ENWX2G3HNET0JTBG5BJE0MAYCA",
+      "tokenId": "238",
+      "success": true,
+      "txid": "24ceb3b151ddbe1ba0f60570622b29862a499760a864708d1a09ff88a80924ba"
+    },
+    {
+      "address": "SP2X7X90783MMGPMJ98C1SEGKDVSRWYG44JY83M9X",
+      "tokenId": "239",
+      "success": true,
+      "txid": "687b0870715704f44e1a2071dc31d5431735b648af557a85dd9195488c2f7af4"
+    },
+    {
+      "address": "SP18S6EVWV2SMST15HZWQD5M6K3G6M56D1YRTGJTE",
+      "tokenId": "240",
+      "success": true,
+      "txid": "37e918bab3e2b7f9e8a6a31f01ae19b87bb1e8861ffcd8823bb9d717e045cdef"
+    },
+    {
+      "address": "SP38T94D0MVTPGNWY7DFZF77Q2KDN5J9A3A954EHN",
+      "tokenId": "241",
+      "success": false,
+      "error": "Failed to broadcast transaction (unable to parse node response)."
+    },
+    {
+      "address": "SPV64P078ZGZ5CPCRT89S3N9CQ8MTK69ZZR55B2K",
+      "tokenId": "242",
+      "success": true,
+      "txid": "8d5b0c45f2b1dbde1c0fa0566a9a5b928cf102042c07bc5b7c36a0860cd59168"
+    },
+    {
+      "address": "SP91DNZF5KS980Z6Q1QR5C6T1RHTJBE163W5CB0X",
+      "tokenId": "243",
+      "success": true,
+      "txid": "c5e05fd968c0ece576227d8ddc8fe228507258d9b8c5068447d537fd107951b3"
+    },
+    {
+      "address": "SP3G6JKMP2QKBJ120R3PVJJY7XC4NMW57C7PXHA3Z",
+      "tokenId": "244",
+      "success": true,
+      "txid": "e2786afd00aab7345f2b35698db304c1ccc94bcddc195d7f49073142cd627207"
+    },
+    {
+      "address": "SP2A2W5BE9ADQH0KKER20PEZTBCK0TRQDEAJ6BT1E",
+      "tokenId": "245",
+      "success": true,
+      "txid": "220812c343e81c025f0c1331907dce67c2a09bf53ccf1f2742b7d4c907f6b896"
+    },
+    {
+      "address": "SP30MAAJDJGH83WRH9102PYSYD0NFQCYGZ3S4FBV1",
+      "tokenId": "246",
+      "success": true,
+      "txid": "2a19a0464c7b44ea3fc222c92704224eb22656d8dfe4077a11b466113efc05eb"
+    },
+    {
+      "address": "SP14V856SC8FYV6M6AHKA0K7KFBHPPS62864WDKVX",
+      "tokenId": "247",
+      "success": true,
+      "txid": "233930cc34b050c47bab7832a5978ecb7dea22352c97937a69223d22e2dd6e94"
+    },
+    {
+      "address": "SP1PS2AD9MSB9DVP2E2KQBTQ3A3XVHX1M7EAMPEFA",
+      "tokenId": "248",
+      "success": true,
+      "txid": "75fe39e3db74b45d97ca75c8ed1a66e53fa03ac2bae73b400db5493b1a60641e"
+    },
+    {
+      "address": "SP2DDK7GYQFK4HG52D2RPSYM5J2EYPKQ696GAG8YV",
+      "tokenId": "249",
+      "success": true,
+      "txid": "118ebf55012bd966c8321f290b7dc39659fe186d70e9ef0c3e43aca34a591962"
+    },
+    {
+      "address": "SP3DET47D8GCS1GPP3X9AB672ACEY6KRM06NJ9HQB",
+      "tokenId": "250",
+      "success": true,
+      "txid": "2849bb8cf76c1161b5b89cd7cc5ad1e330416cc1e9ec1b9e8ec65017c028bf83"
+    },
+    {
+      "address": "SP3J440QZ42T3VFG3WZY9ARWQPYATBPR6FG0H8E8Z",
+      "tokenId": "251",
+      "success": true,
+      "txid": "9c0b2fa9a41042ea7b6b22796d2b57db81d28ea553205758305db4ba6ade6198"
+    },
+    {
+      "address": "SP3W8DWEFHPP3YKW9PBMB0WYZK7H51BW8PF7QW4TA",
+      "tokenId": "252",
+      "success": true,
+      "txid": "c853b8133b54f6bd97b24402009e08a895fa3aa802cae0c462cf6009bf6f2fd5"
+    },
+    {
+      "address": "SP2QKT5A97727XTG5XJN8MTVENMZZ0N4BTBVCDHPZ",
+      "tokenId": "253",
+      "success": true,
+      "txid": "eed8a30e218993d6ffb1d0ed4b0962d9e673e635802ee986a84aa3f9d701220d"
+    },
+    {
+      "address": "SP245ST9PMSS0X66BG6EG0EFT3Q028AXERTDNSV2H",
+      "tokenId": "254",
+      "success": true,
+      "txid": "cdaa49b7f250a53ff210415acefa0961f93f67d842b6852538471321e5a46124"
+    },
+    {
+      "address": "SP34A44WY8F7HZB1M1BWFBQRPZRJCDZ0FWPHEFMAZ",
+      "tokenId": "255",
+      "success": true,
+      "txid": "b030f59291ee1073fe06df2b91e70d48acf8b0f2e6719664a06aff66820622c3"
+    },
+    {
+      "address": "SPEKTVV2PCSNJM8EFMFDB33KMETFH8WMAEQZ43DV",
+      "tokenId": "257",
+      "success": true,
+      "txid": "2618a87ea1a9b1f15813a992731c57d0fb358cad2f37bfb7674e89bf9a75aa4c"
+    },
+    {
+      "address": "SP1GZP17V4S7YK3WCMCB62CZG18NW0VC0VS1MQST8",
+      "tokenId": "256",
+      "success": true,
+      "txid": "1388118741339d8c476c5316300bdce6009da941cfc0109bf32c53fc8d2e01b7"
+    },
+    {
+      "address": "SPV6V5E6F1W0PJ6XBNA0HQV104B3PC41X3A0NMH3",
+      "tokenId": "258",
+      "success": false,
+      "error": "Failed to broadcast transaction (unable to parse node response)."
+    },
+    {
+      "address": "SP1MFJ28J1HF259RWS8CFWEJPMVKWEA0QPB2YMF06",
+      "tokenId": "259",
+      "success": true,
+      "txid": "c9360818097e6c0862b83ef00e327d341563031a88dbd23fa7fdd7de218ec148"
+    },
+    {
+      "address": "SP1811DZ6WEXRYA30D0K5RAEG8X1NDMQZK7YKPS4H",
+      "tokenId": "260",
+      "success": true,
+      "txid": "1c0f6c568663aa8b7091c2158f72a6cec05a3d38689a3a8421ef1c1676fb249c"
+    },
+    {
+      "address": "SP34DX121PY4H9KZPQR9YV418E9PZ800DG22F79GD",
+      "tokenId": "261",
+      "success": true,
+      "txid": "87fd7deb6d866ffdf73cb3055566c99ab886c20bde7f917f29569278c4b1916d"
+    },
+    {
+      "address": "SP12Z4QDPG38BDGYS3V9V8Z4J9ZH5XZDT3VJ3M33",
+      "tokenId": "264",
+      "success": true,
+      "txid": "0fb21111fefaff28789e230f2c7ff696f40e6ede18ec061ef4b77f05a4a15623"
+    },
+    {
+      "address": "SP1K7RHNYJH6HYS207Y0CV943FNYGTWCMV32E4BE4",
+      "tokenId": "262",
+      "success": true,
+      "txid": "53cf299c0ca9a1894945742b4cbcbee1d053bd58e19862c17843167c0438025b"
+    },
+    {
+      "address": "SPBS7AQ8T48KBYKP30RGR55W5HBBP9MH74N0EC4V",
+      "tokenId": "263",
+      "success": true,
+      "txid": "4b8d59226296dc5fb58e3eea9b4c66c5091bd41e1076c44656fd9fa3e9b5465f"
+    },
+    {
+      "address": "SP8RMRGR13595DWJJ6AB9CD7EP0H0ERER21EQGAH",
+      "tokenId": "265",
+      "success": true,
+      "txid": "2b5b7a9b9db0d7a25d75545de8232bd908b073fc4110aad73c918f72cd2bd7d8"
+    },
+    {
+      "address": "SP3PYMT41E0M8X27Z9SW7N91109KAYW3E94YK7Z7S",
+      "tokenId": "266",
+      "success": true,
+      "txid": "45066ed270e45b6e271f030af08986f0a6d3f100a335fefbbdbc038703183f6c"
+    },
+    {
+      "address": "SP1AH2D92BPJVZK9NAKV05S5YWSCHHCWZY246FN1C",
+      "tokenId": "267",
+      "success": true,
+      "txid": "7413d50e414a0ab2c65f6644b0de03c8b5d8424542b267e391e65bc06c954414"
+    },
+    {
+      "address": "SP10KFVZX6MWCKEDDEBMAAWPZ2WX14JCM6339HMKY",
+      "tokenId": "268",
+      "success": true,
+      "txid": "ddc79bf586a0b28eddd27a0208954d806d85a9501a642a212dba9af8955d7d3a"
+    },
+    {
+      "address": "SP18S10ZZFRD2K0K4HTANF7741ZWST7B00ANXSZMG",
+      "tokenId": "269",
+      "success": true,
+      "txid": "aedd44cd3f9aa423caf9075864bed422272caa5c2b8c79212be37aa717018f48"
+    },
+    {
+      "address": "SP3WEGGZTCDG1G3XSARSMY128SWRZN79WGGT9YHH7",
+      "tokenId": "270",
+      "success": true,
+      "txid": "c86dd792990a0cd6c7d017b91953083619c06e4f1b10740721806b8fdd1b4fc2"
+    },
+    {
+      "address": "SP2SKHEA8P0M4H3BT17SAK9A4BT54MW8TPEFSXM78",
+      "tokenId": "271",
+      "success": true,
+      "txid": "ecb625d78d667a616e64b17e1ff673afd2c796aa394c1d1b16a51d61d631c429"
+    },
+    {
+      "address": "SP2VVKCKA2WD8PC9F96E5492B9VZDBZAF4BK4JWT7",
+      "tokenId": "272",
+      "success": true,
+      "txid": "1e2c9b90efafefd52262d0a7ebae8b0241d775b7d38208943ad866099862f473"
+    },
+    {
+      "address": "SP3Y169K3W606M1R59DYYPQ1EZ85RBAJD9M6D8YY1",
+      "tokenId": "273",
+      "success": true,
+      "txid": "f4f1b84d56d8cd7aff52f15bf3274a97516055ed776f56224848ade3a69dbd9a"
+    },
+    {
+      "address": "SPHQFYTGSTAMAC562NGMXMW27CJ494SWRZDQP2S2",
+      "tokenId": "274",
+      "success": true,
+      "txid": "35960f0a5dc1d490d10f41c022c3bed318921f9b0d9e6eec23a5a2fd48bb5dbe"
+    }
+  ]
+}

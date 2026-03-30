@@ -1,0 +1,463 @@
+{
+  "network": "mainnet",
+  "marketplace": "SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.nft-marketplace-v2",
+  "nftAssetIdentifier": "SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v4::simple-nft",
+  "listPriceMicroStx": "50000",
+  "walletFile": "/home/thee1/SpinningB/generated/mainnet-wallets.json",
+  "selectedWallets": 50,
+  "successCount": 24,
+  "failCount": 26,
+  "createdAt": "2026-03-09T22:20:01.786Z",
+  "results": [
+    {
+      "address": "SP3KTZM9BVZ0Z0BX90BP65FX74PJ2NJ3CFNXNRJ37",
+      "tokenId": "275",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000190",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "49abd6559fc539449b53c69d404228f0a5ef1248abcdf6df8f73f4a8789d3b61"
+    },
+    {
+      "address": "SPZQGY6H38N82Z851JCPSPHTV86RRRRPCKFYMCRJ",
+      "tokenId": "326",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x0000000000000000000000000000076c",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "39dfd99e4a7eaefac7b10e404465809ab10da898e28f215bf6d25caceea9f914"
+    },
+    {
+      "address": "SP3FPZXZ36DG3G3XVJ0H3K91ZRA7CTZ5PMWAKCP87",
+      "tokenId": "278",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000015e0",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "8b477a0f0c8b689f5b1340ef1a5e3075bc8e4e31b06ebd322753ef6d01f30214"
+    },
+    {
+      "address": "SPJK8SK2207EVEGERZE3ZAQWHMZCMHJJ5SE8HN4R",
+      "tokenId": "327",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "a90452ac340a99ae12ab2b53e3903e17613b53fc095616a9dfb1dbb467e9ab0d"
+    },
+    {
+      "address": "SP3MDYGWSWVKWGDY3E19GTGM0G7WS8191ASEPM35M",
+      "tokenId": "328",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000011f8",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "4f2c5f4fef59507aba3e36aec347997fc845172250abc78889e1f2efbb556cd4"
+    },
+    {
+      "address": "SP1EK02HNGRE56ADK4Y057GD03N2590WY1QFMW55X",
+      "tokenId": "277",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000015e0",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "a3981d0a97177ac9eb4218b9567e5d47dddc4da36535345ea8f52a56ca6393c0"
+    },
+    {
+      "address": "SP5HKJCF0AJ45CZTDCJ9CMW1WFBVX3G35XGCEA7G",
+      "tokenId": "325",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "e93a5739f18ff6c9ff29e8477b42e0181938ad6739807a5fc7df8038f3e0b35b"
+    },
+    {
+      "address": "SP3JPYPRQX844907DYX0T7P937XJDTX40Q5Z3PCAD",
+      "tokenId": "329",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "5b955df2f25816ddfe4db5f2cd8e6910fcfd620d02e43c4e15ef46a08071e8a0"
+    },
+    {
+      "address": "SP1564SHXHPCWD3C4PNZNKJZP85QEEV381JWSBFQH",
+      "tokenId": "330",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "2246cc38c8cacd7a4d177cd7df9e7f7ffa16565b568b734a26199e3b8fa0835d"
+    },
+    {
+      "address": "SP18YDP11CBE232VGHPM4M9APZ271X96CMBHZG0XQ",
+      "tokenId": "331",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000002580",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "3084da8a213aa1d18f48c6fc40ea608e613ad62abf7b0fa7d5e05d1329710837"
+    },
+    {
+      "address": "SP372PNK4T77QZV03NYSWY8ZGHK35HR36DFS99FMD",
+      "tokenId": "332",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000011f8",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "307040e53d2c19de5b35078dd38008a26d15d087e187986575e406563daa5391"
+    },
+    {
+      "address": "SP3TQVEMSHVDM9DXP65F3G00E240CGAF366RCMYKJ",
+      "tokenId": "287",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000190",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "1410d7b59060ae4748d1b67a4749021d115b6b5ab082b432d91abb9c30ae1a93"
+    },
+    {
+      "address": "SP3ERXSZBZHC6SVZCXDN98TDJ9QYJBXQM2NRWE4JF",
+      "tokenId": "333",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000001130",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "e48cbd5fd64c0dc30555ec357dd8eaf5dbba060796faf50c98caebe9ebd7df64"
+    },
+    {
+      "address": "SPDAQFSN0RYTY5ENWX2G3HNET0JTBG5BJE0MAYCA",
+      "tokenId": "334",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000001130",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "3056751cc86a3132cb9b71d9ca42c68feeca355c089ddf18b3066ffcf2c5a251"
+    },
+    {
+      "address": "SP2X7X90783MMGPMJ98C1SEGKDVSRWYG44JY83M9X",
+      "tokenId": "335",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000001130",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "8af269a2e52b59db461b811876cf462de19e31444d78f2862134374195f8ce9e"
+    },
+    {
+      "address": "SP18S6EVWV2SMST15HZWQD5M6K3G6M56D1YRTGJTE",
+      "tokenId": "290",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000190",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "c10b32a75b9e946c7f97b39fe7f6c2a1b9b7037b4e01ae051bd335956d71c161"
+    },
+    {
+      "address": "SP38T94D0MVTPGNWY7DFZF77Q2KDN5J9A3A954EHN",
+      "tokenId": "336",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x0000000000000000000000000000170c",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "4e946cb4051ff668ce63a571ee8a50c091d08a5e1778fb5048bfd33177b905e9"
+    },
+    {
+      "address": "SPV64P078ZGZ5CPCRT89S3N9CQ8MTK69ZZR55B2K",
+      "tokenId": "292",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000015e0",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "4a8ca663c3bcad8d7916c1506d437dfafbf3a5b9545d89f2ca6b876c9239a533"
+    },
+    {
+      "address": "SP91DNZF5KS980Z6Q1QR5C6T1RHTJBE163W5CB0X",
+      "tokenId": "337",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "1de6c9f706c7a1b45e6b9fb7a277b8f130ecea3a3fe545f93cf3e9c6055111f0"
+    },
+    {
+      "address": "SP3G6JKMP2QKBJ120R3PVJJY7XC4NMW57C7PXHA3Z",
+      "tokenId": "338",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "3d97132b799f5036cad84e7b6b4777da953aa46f86c755804dd192a38340b9c0"
+    },
+    {
+      "address": "SP2A2W5BE9ADQH0KKER20PEZTBCK0TRQDEAJ6BT1E",
+      "tokenId": "339",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "c697832aca05a63bda28f62098494dcff8d3e24887302a06dc486730c4f95392"
+    },
+    {
+      "address": "SP30MAAJDJGH83WRH9102PYSYD0NFQCYGZ3S4FBV1",
+      "tokenId": "340",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000000834",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "cecdbb75e9325a656666a6f78078ab968f6bb170147738b561c76e89977da477"
+    },
+    {
+      "address": "SP14V856SC8FYV6M6AHKA0K7KFBHPPS62864WDKVX",
+      "tokenId": "341",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000002580",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "4ed5f4c85c53b87650d7d099a09c23fbcef0bf161a21bcdd03d4477fd0eef124"
+    },
+    {
+      "address": "SP1PS2AD9MSB9DVP2E2KQBTQ3A3XVHX1M7EAMPEFA",
+      "tokenId": "342",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x000000000000000000000000000011f8",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "29cc5a565fedeb4117128b18f69b862a5d2f0aa8266a864a0910947ed6068a86"
+    },
+    {
+      "address": "SP2DDK7GYQFK4HG52D2RPSYM5J2EYPKQ696GAG8YV",
+      "tokenId": "343",
+      "success": false,
+      "error": "transaction rejected (NotEnoughFunds)",
+      "reason": "NotEnoughFunds",
+      "reasonData": {
+        "actual": "0x00000000000000000000000000001bbc",
+        "expected": "0x00000000000000000000000000002710"
+      },
+      "txid": "66b0561ec959e1d3db6cc946df985145330dfdc149d9a282ac603b88590d9da9"
+    },
+    {
+      "address": "SP3DET47D8GCS1GPP3X9AB672ACEY6KRM06NJ9HQB",
+      "tokenId": "344",
+      "success": true,
+      "txid": "ad5adff95e9eb9cbab37e778a90755ea073c94c926662788107f902936c85f73"
+    },
+    {
+      "address": "SP3J440QZ42T3VFG3WZY9ARWQPYATBPR6FG0H8E8Z",
+      "tokenId": "345",
+      "success": true,
+      "txid": "6641f913dca6fbd2366750e279aacd2236e1745e5d01ed66d96209e156d34ede"
+    },
+    {
+      "address": "SP3W8DWEFHPP3YKW9PBMB0WYZK7H51BW8PF7QW4TA",
+      "tokenId": "346",
+      "success": true,
+      "txid": "f3bc817077b801f4ba748a5f50df48eef758e49f72edaea3f6327a93330bcfb0"
+    },
+    {
+      "address": "SP2QKT5A97727XTG5XJN8MTVENMZZ0N4BTBVCDHPZ",
+      "tokenId": "347",
+      "success": true,
+      "txid": "6d090fcb416a69c0f23781f9a2193f095e078544b859eafb3070558ffe3df185"
+    },
+    {
+      "address": "SP245ST9PMSS0X66BG6EG0EFT3Q028AXERTDNSV2H",
+      "tokenId": "348",
+      "success": true,
+      "txid": "e1d09519ac2fb9349098346b3ad48281a2a6c59e8417290ca9db2ae5380c4c73"
+    },
+    {
+      "address": "SP34A44WY8F7HZB1M1BWFBQRPZRJCDZ0FWPHEFMAZ",
+      "tokenId": "349",
+      "success": true,
+      "txid": "9d9ac98f834816023e42d97a2921b0c7cb4b121bc545b779347c17bd70886974"
+    },
+    {
+      "address": "SPEKTVV2PCSNJM8EFMFDB33KMETFH8WMAEQZ43DV",
+      "tokenId": "350",
+      "success": true,
+      "txid": "98996a594363338c3787e7bb3a860687d8cd80b342fa4551efdd30ef397948e4"
+    },
+    {
+      "address": "SP1GZP17V4S7YK3WCMCB62CZG18NW0VC0VS1MQST8",
+      "tokenId": "351",
+      "success": false,
+      "error": "Failed to broadcast transaction (unable to parse node response)."
+    },
+    {
+      "address": "SPV6V5E6F1W0PJ6XBNA0HQV104B3PC41X3A0NMH3",
+      "tokenId": "352",
+      "success": true,
+      "txid": "001d81c7d5a8a02ceea2deb3b9afc7ad51d723ff6050de667a8ae84da5035ed3"
+    },
+    {
+      "address": "SP1MFJ28J1HF259RWS8CFWEJPMVKWEA0QPB2YMF06",
+      "tokenId": "353",
+      "success": true,
+      "txid": "30038377ba3debbbcf7eefa4080115937e4fdef7ae7ffc2f8dac1082a9cbb09f"
+    },
+    {
+      "address": "SP1811DZ6WEXRYA30D0K5RAEG8X1NDMQZK7YKPS4H",
+      "tokenId": "354",
+      "success": true,
+      "txid": "3064daa842c9ef8b4b36103ec9ac119a4b7e77449001bd6b52f1e0316ec932d3"
+    },
+    {
+      "address": "SP34DX121PY4H9KZPQR9YV418E9PZ800DG22F79GD",
+      "tokenId": "355",
+      "success": true,
+      "txid": "10f37e9291632ff0107ab40e3a75a62d4792cc9e9de22d51a2ace3288ccee56d"
+    },
+    {
+      "address": "SP12Z4QDPG38BDGYS3V9V8Z4J9ZH5XZDT3VJ3M33",
+      "tokenId": "356",
+      "success": true,
+      "txid": "7537970220368bb3526ad401c6090be312c078cdff628f7a87122294956b900a"
+    },
+    {
+      "address": "SP1K7RHNYJH6HYS207Y0CV943FNYGTWCMV32E4BE4",
+      "tokenId": "357",
+      "success": true,
+      "txid": "7ea8e486de845e346cf5b443551ac96018613e4db9a0c98bff67fc8aedd44adc"
+    },
+    {
+      "address": "SPBS7AQ8T48KBYKP30RGR55W5HBBP9MH74N0EC4V",
+      "tokenId": "358",
+      "success": true,
+      "txid": "e0b63c7a870ad40da7c4a896f3a969cd6db790c655bcebab6c3b29ba565bfa45"
+    },
+    {
+      "address": "SP8RMRGR13595DWJJ6AB9CD7EP0H0ERER21EQGAH",
+      "tokenId": "359",
+      "success": true,
+      "txid": "4c68aa235b035ef1bf944a10b071ccbca22779b05cbadf423e1d4c18aef4eb25"
+    },
+    {
+      "address": "SP3PYMT41E0M8X27Z9SW7N91109KAYW3E94YK7Z7S",
+      "tokenId": "361",
+      "success": true,
+      "txid": "99325a724d88acc04547404c50db8bb9655c1b790a75bd07606f1bc38465537d"
+    },
+    {
+      "address": "SP1AH2D92BPJVZK9NAKV05S5YWSCHHCWZY246FN1C",
+      "tokenId": "360",
+      "success": true,
+      "txid": "cee37a62654408a230eecec35b70b5482727362491231fa8ae6d0364d6fca251"
+    },
+    {
+      "address": "SP10KFVZX6MWCKEDDEBMAAWPZ2WX14JCM6339HMKY",
+      "tokenId": "362",
+      "success": true,
+      "txid": "ec348093b898c74a261e4513583d11dbf755fa4adfe960ec85254f30c53f73c6"
+    },
+    {
+      "address": "SP18S10ZZFRD2K0K4HTANF7741ZWST7B00ANXSZMG",
+      "tokenId": "363",
+      "success": true,
+      "txid": "ac58286ca4063e51eae023f3880ec4c3e3d1c18d1a218876800823a4be9ac093"
+    },
+    {
+      "address": "SP3WEGGZTCDG1G3XSARSMY128SWRZN79WGGT9YHH7",
+      "tokenId": "364",
+      "success": true,
+      "txid": "1874928465d37914e39dc1be8683579c0cb958adfc478955c4468fd91815504b"
+    },
+    {
+      "address": "SP2SKHEA8P0M4H3BT17SAK9A4BT54MW8TPEFSXM78",
+      "tokenId": "365",
+      "success": true,
+      "txid": "c05d637805cec45e156d7c4c1b6542f2df1a749ab8c59b16351c9117b5c277de"
+    },
+    {
+      "address": "SP2VVKCKA2WD8PC9F96E5492B9VZDBZAF4BK4JWT7",
+      "tokenId": "366",
+      "success": true,
+      "txid": "134b743a78dc858e842c3900fbb3b050f5986db2fb6d4e75af17f4667ad7061a"
+    },
+    {
+      "address": "SP3Y169K3W606M1R59DYYPQ1EZ85RBAJD9M6D8YY1",
+      "tokenId": "367",
+      "success": true,
+      "txid": "2cd610feb5e17170c64c45afa48b2c7ef887e82ea369d39cd2b1fbd700f85939"
+    },
+    {
+      "address": "SPHQFYTGSTAMAC562NGMXMW27CJ494SWRZDQP2S2",
+      "tokenId": "368",
+      "success": true,
+      "txid": "790553ac9209549aee65420d64b9a71fb074a15dc2f89ae37356a4e4acde9930"
+    }
+  ]
+}

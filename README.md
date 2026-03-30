@@ -1,27 +1,32 @@
-# Simple NFT Marketplace
+# Simple NFT Mint Studio
 
-A minimal NFT marketplace on the Stacks blockchain with minting, listing, buying, and selling functionality.
+A polished Stacks mainnet desk for minting Simple NFTs, watching live marketplace activity, and operating listings with fee-aware pricing guidance.
 
 ## Features
 
--  Simple NFT with sequential IDs
+-  Live mint, list, buy, and cancel flows for the Simple NFT collection
+-  Professional dashboard theme with responsive card-based layout
+-  Wallet desk with connection status, sync cadence, and portfolio inventory
+-  Live market pulse with floor, average ask, and seller exposure
+-  Fee-aware price lab for modeling seller net and floor positioning
+-  Browser-stored activity history and UI preferences
 -  Low fees: Mint (0.001 STX), List (0.0013 STX), Sale (0.0013 STX)
--  Built-in marketplace for listing and buying NFTs
--  Wallet connection via browser extensions (Leather, Xverse)
--  Vite-powered frontend
 
 
 ## Project Structure
 
 ```
-simple-nft-v2/
+SNF---Simple-NFT-Mint/
 ├── contracts/
-│   ├── simple-nft-v3.clar     # NFT contract (SIP-009)
-│   └── nft-marketplace.clar   # Marketplace contract
+│   ├── simple-nft-v4.clar          # NFT contract used by the dashboard
+│   └── nft-marketplace-v2.clar     # Marketplace contract used for listings and sales
 ├── src/
-│   └── main.js                # Frontend application
-├── index.html                 # Main HTML file
-├── vite.config.js             # Vite configuration
+│   ├── main.js                     # Frontend logic, wallet flows, and live data reads
+│   └── styles/stacks-vivid-theme.css
+├── index.html                      # Studio shell and dashboard structure
+├── multi-wallet-mint.js            # Bulk minting helper for generated wallets
+├── multi-wallet-marketplace.js     # Bulk marketplace helper
+├── vite.config.js
 └── package.json
 ```
 
@@ -40,6 +45,13 @@ npm run dev
 ```
 
 Visit http://localhost:3000
+
+## Dashboard Notes
+
+- The frontend reads contract data from Hiro mainnet endpoints by default.
+- Activity history, theme selection, auto-refresh preference, and price lab inputs are stored in browser local storage.
+- The price lab uses the current floor from the recent market scan window, not the full contract history.
+- The marketplace view scans the most recent 24 minted token IDs for active listings to keep the desk responsive.
 
 ## Contract Details
 
@@ -87,6 +99,36 @@ The frontend supports these Stacks wallets:
 ```bash
 npm run build
 npm run preview
+```
+
+## Multi-Wallet Mint Script
+
+Use the bundled multi-wallet script to mint from your 50 pre-generated wallets in:
+`/home/thee1/SpinningB/generated/mainnet-wallets.json`
+
+### Dry run (recommended first)
+
+```bash
+npm run mint:multi:dry
+```
+
+### Run actual mints
+
+```bash
+npm run mint:multi
+```
+
+### Useful overrides
+
+```bash
+# Mint from testnet
+NETWORK=testnet npm run mint:multi
+
+# Mint from a different wallet file
+node multi-wallet-mint.js --wallet-file /path/to/wallets.json
+
+# Limit wallet range / repeat mints per wallet
+WALLET_LIMIT=10 START_INDEX=0 MINTS_PER_WALLET=1 npm run mint:multi
 ```
 
 ## License
