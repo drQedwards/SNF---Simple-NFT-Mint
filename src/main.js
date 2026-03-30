@@ -259,6 +259,14 @@ function showStatus(message, type = 'info', { persist = false } = {}) {
   }
 }
 
+function setButtonBusy(button, isBusy, idleLabel, busyLabel) {
+  if (!button) return;
+
+  button.textContent = isBusy ? busyLabel : idleLabel;
+  button.classList.toggle('loading', isBusy);
+  button.disabled = isBusy;
+}
+
 function hideStatus() {
   if (state.statusTimer) {
     window.clearTimeout(state.statusTimer);
@@ -627,8 +635,7 @@ async function refreshDashboard({ withStatus = false } = {}) {
   if (state.refreshInFlight) return;
 
   state.refreshInFlight = true;
-  elements.refreshBtn.disabled = true;
-  elements.refreshBtn.textContent = 'Refreshing...';
+  setButtonBusy(elements.refreshBtn, true, 'Refresh Dashboard', 'Refreshing');
   updateSyncStatus('Refreshing dashboard', 'Pulling live market and network data.');
 
   try {
@@ -651,8 +658,7 @@ async function refreshDashboard({ withStatus = false } = {}) {
     }
   } finally {
     state.refreshInFlight = false;
-    elements.refreshBtn.disabled = false;
-    elements.refreshBtn.textContent = 'Refresh Dashboard';
+    setButtonBusy(elements.refreshBtn, false, 'Refresh Dashboard', 'Refreshing');
   }
 }
 
@@ -674,6 +680,7 @@ function setAutoRefresh(enabled) {
 }
 
 async function connectWallet() {
+  setButtonBusy(elements.connectBtn, true, 'Connect Wallet', 'Opening Wallet');
   showStatus('Opening wallet...', 'info');
 
   showConnect({
@@ -689,10 +696,12 @@ async function connectWallet() {
       setWalletSignals();
       addActivity('Wallet', 'Wallet connected.');
       showStatus('Connected to wallet.', 'success');
+      setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
       await refreshDashboard();
     },
     onCancel: () => {
       showStatus('Connection canceled.', 'error', { persist: true });
+      setButtonBusy(elements.connectBtn, false, 'Connect Wallet', 'Opening Wallet');
     },
     userSession,
   });
@@ -730,7 +739,7 @@ function mintNFT() {
     return;
   }
 
-  elements.mintBtn.disabled = true;
+  setButtonBusy(elements.mintBtn, true, 'Mint NFT', 'Awaiting Approval');
   showStatus('Opening wallet approval for mint...', 'info');
 
   openContractCall({
@@ -747,14 +756,14 @@ function mintNFT() {
       const txId = data.txId;
       showStatus(`Mint submitted. <a href="${formatExplorerUrl(txId)}" target="_blank" rel="noopener noreferrer">View on explorer</a>`, 'success');
       addActivity('Mint', `Mint submitted by ${formatAddress(state.userAddress)}.`, txId);
-      elements.mintBtn.disabled = false;
+      setButtonBusy(elements.mintBtn, false, 'Mint NFT', 'Awaiting Approval');
       window.setTimeout(() => {
         refreshDashboard();
       }, 8000);
     },
     onCancel: () => {
       showStatus('Mint transaction canceled.', 'error', { persist: true });
-      elements.mintBtn.disabled = false;
+      setButtonBusy(elements.mintBtn, false, 'Mint NFT', 'Awaiting Approval');
     },
     userSession,
   });
