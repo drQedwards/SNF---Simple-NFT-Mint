@@ -407,6 +407,28 @@ function readOptionalListing(json) {
   };
 }
 
+function getUserListingStats() {
+  if (!state.userAddress) {
+    return {
+      ownedCount: state.userNFTs.length,
+      listedCount: 0,
+      readyToListCount: state.userNFTs.length,
+    };
+  }
+
+  const listedTokenIds = new Set(
+    state.marketListings.filter((listing) => listing.seller === state.userAddress).map((listing) => String(listing.tokenId))
+  );
+  const ownedTokenIds = state.userNFTs.map((nft) => getTokenIdFromHolding(nft)).filter(Boolean);
+  const listedCount = ownedTokenIds.filter((tokenId) => listedTokenIds.has(String(tokenId))).length;
+
+  return {
+    ownedCount: ownedTokenIds.length,
+    listedCount,
+    readyToListCount: Math.max(ownedTokenIds.length - listedCount, 0),
+  };
+}
+
 async function fetchMintedCount() {
   const json = await callReadOnly(CONFIG.NFT_CONTRACT_ADDRESS, CONFIG.NFT_CONTRACT_NAME, 'get-total-minted');
   const mintedCount = readCvNumber(json);
