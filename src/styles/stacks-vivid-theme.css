@@ -903,6 +903,8 @@ h1 {
 }
 
 @media (max-width: 1180px) {
+  .trust-bar,
+  .insight-ribbon,
   .hero-grid,
   .dashboard-grid,
   .lower-grid,
@@ -926,13 +928,19 @@ h1 {
   }
 
   .topbar-actions,
-  .wallet-actions {
+  .wallet-actions,
+  .hero-actions,
+  .activity-controls,
+  .price-actions {
     width: 100%;
   }
 
   .topbar-actions .btn,
   .wallet-actions .btn,
-  .mint-command .btn {
+  .mint-command .btn,
+  .hero-actions .btn,
+  .price-actions .btn,
+  .activity-controls .chip-btn {
     flex: 1;
   }
 
@@ -941,7 +949,10 @@ h1 {
   }
 
   .mint-summary,
-  .market-summary {
+  .market-summary,
+  .hero-microstats,
+  .wallet-meta-grid,
+  .portfolio-summary {
     grid-template-columns: 1fr;
   }
 }
