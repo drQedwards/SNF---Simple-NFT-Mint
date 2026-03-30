@@ -476,6 +476,27 @@ h1 {
   margin-bottom: 14px;
 }
 
+.insight-ribbon {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.insight-chip-card {
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  box-shadow: var(--shadow-soft);
+}
+
+.insight-chip-card strong {
+  display: block;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
 .progress-head {
   display: flex;
   align-items: flex-end;
@@ -548,6 +569,31 @@ h1 {
 .panel-note {
   margin: 12px 0 0;
   line-height: 1.6;
+}
+
+.mint-brief,
+.strategy-stack {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.brief-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.brief-line span {
+  color: var(--text-muted);
+}
+
+.brief-line strong {
+  text-align: right;
 }
 
 .portfolio-controls,
