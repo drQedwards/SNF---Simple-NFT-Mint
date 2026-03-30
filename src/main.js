@@ -357,6 +357,8 @@ function setWalletSignals() {
     elements.walletChip.textContent = 'Live';
     elements.walletSessionState.textContent = 'Approved';
     elements.walletReadiness.textContent = 'Wallet connected and ready for execution';
+    elements.heroConnectBtn.textContent = 'Wallet Connected';
+    elements.heroConnectBtn.disabled = true;
   } else {
     elements.walletState.textContent = 'Waiting for wallet';
     elements.walletStateDetail.textContent = 'Connect Leather or Xverse to unlock mint and market actions.';
@@ -365,6 +367,8 @@ function setWalletSignals() {
     elements.walletChip.textContent = 'Idle';
     elements.walletSessionState.textContent = 'Standby';
     elements.walletReadiness.textContent = 'Connect to unlock desk tools';
+    elements.heroConnectBtn.textContent = 'Connect and Start';
+    elements.heroConnectBtn.disabled = false;
   }
 }
 
