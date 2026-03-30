@@ -715,6 +715,11 @@ h1 {
   margin-bottom: 14px;
 }
 
+.activity-head > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
 .activity-head small {
   color: var(--text-muted);
 }
