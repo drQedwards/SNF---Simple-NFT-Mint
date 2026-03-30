@@ -61,6 +61,7 @@ const elements = {
   priceLabInput: document.getElementById('price-lab-input'),
   matchFloorBtn: document.getElementById('match-floor-btn'),
   undercutFloorBtn: document.getElementById('undercut-floor-btn'),
+  applyPriceLabBtn: document.getElementById('apply-price-lab-btn'),
   clearActivityBtn: document.getElementById('clear-activity-btn'),
   notConnected: document.getElementById('not-connected'),
   connected: document.getElementById('connected'),
