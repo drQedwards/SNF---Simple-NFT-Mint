@@ -830,13 +830,16 @@ function renderMarketListings() {
     .map((listing) => {
       const isOwner = Boolean(state.userAddress) && listing.seller === state.userAddress;
       const actionLabel = isOwner ? 'Cancel Listing' : 'Buy NFT';
+      const floorDelta = state.marketInsights?.bestAskMicroStx
+        ? microToStx(listing.priceMicroStx - state.marketInsights.bestAskMicroStx).toFixed(4)
+        : null;
 
       return `
         <article class="market-card">
           <div class="market-image"></div>
           <div>
             <span class="market-id">Token #${listing.tokenId}</span>
-            <span class="market-owner">Seller: ${formatAddress(listing.seller)}</span>
+            <span class="market-owner">Seller: ${formatAddress(listing.seller)}${floorDelta ? ` | Delta ${floorDelta} STX` : ''}</span>
           </div>
           <div class="market-price">
             <strong>${formatStxFromMicro(listing.priceMicroStx)}</strong>
