@@ -879,6 +879,9 @@ async function refreshDashboard({ withStatus = false } = {}) {
   if (state.refreshInFlight) return;
 
   state.refreshInFlight = true;
+  if (state.userAddress) {
+    elements.walletSessionState.textContent = 'Syncing';
+  }
   setButtonBusy(elements.refreshBtn, true, 'Refresh Dashboard', 'Refreshing');
   updateSyncStatus('Refreshing dashboard', 'Pulling live market and network data.');
 
@@ -904,6 +907,9 @@ async function refreshDashboard({ withStatus = false } = {}) {
     }
   } finally {
     state.refreshInFlight = false;
+    if (state.userAddress) {
+      elements.walletSessionState.textContent = 'Approved';
+    }
     setButtonBusy(elements.refreshBtn, false, 'Refresh Dashboard', 'Refreshing');
   }
 }
