@@ -1,18 +1,6 @@
 # Theme Tuning Log
 
-This log tracks the visual direction for the current studio theme.
-
-## 2026-03 Studio Refresh
-
-- Shifted the dashboard from a playful neon look to a more premium trading-desk atmosphere.
-- Replaced the previous font stack with `Fraunces`, `Plus Jakarta Sans`, and `JetBrains Mono`.
-- Added trust pills, an insight ribbon, and a dedicated pricing lab to support a more professional information hierarchy.
-- Consolidated the design system around deeper navy surfaces, warm brass highlights, cyan data accents, and softer panel shadows.
-- Removed the leftover generated sky-blue stylesheet so the theme source of truth is the main dashboard stylesheet only.
-
-## Legacy Tuning Notes
-
-The entries below were kept as archival notes from earlier visual experiments.
+This log tracks iterative visual tuning commits for the colorful Stacks theme.
 - Iteration 01: hue shift  11deg, blur 11px
 - Iteration 02: hue shift  22deg, blur 12px
 - Iteration 03: hue shift  33deg, blur 13px

@@ -134,3 +134,5 @@ WALLET_LIMIT=10 START_INDEX=0 MINTS_PER_WALLET=1 npm run mint:multi
 ## License
 
 ISC
+
+- Improvement 0.2: Better documentation for marketplace fees.
