@@ -18,7 +18,7 @@
 (define-constant ERR_MAX_SUPPLY_REACHED (err u105))
 
 ;; Marketplace contract that is allowed to transfer NFTs
-(define-constant MARKETPLACE_CONTRACT 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.nft-marketplace)
+(define-constant MARKETPLACE_CONTRACT 'SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8.nft-marketplace)
 
 ;; Data variables
 (define-data-var last-token-id uint u0)
