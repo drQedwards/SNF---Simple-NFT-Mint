@@ -760,6 +760,7 @@ async function fetchRecentListings(latestMintedCount, { silent = false } = {}) {
   renderMarketPulse();
   renderPortfolioSummary();
   renderPriceLab();
+  renderMarketStrategy();
   renderMarketListings();
 }
 
@@ -1184,6 +1185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderMintDesk();
   renderNFTList();
   renderPriceLab();
+  renderMarketStrategy();
   renderMarketListings();
 
   setAutoRefresh(Boolean(elements.autoRefresh?.checked));
