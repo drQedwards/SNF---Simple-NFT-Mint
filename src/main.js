@@ -361,6 +361,26 @@ function updateSyncStatus(message, detail) {
   elements.dashboardSyncDetail.textContent = detail;
 }
 
+function formatCountdown(ms) {
+  const totalSeconds = Math.max(Math.ceil(ms / 1000), 0);
+  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(totalSeconds / 60);
+  return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+}
+
+function updateRefreshCountdown() {
+  if (!elements.nextSyncLabel) return;
+
+  if (!elements.autoRefresh?.checked || !state.lastRefreshAt) {
+    elements.nextSyncLabel.textContent = 'Manual';
+    return;
+  }
+
+  const nextRefreshAt = state.lastRefreshAt + CONFIG.AUTO_REFRESH_MS;
+  const remaining = nextRefreshAt - Date.now();
+  elements.nextSyncLabel.textContent = remaining <= 0 ? 'Due now' : formatCountdown(remaining);
+}
+
 function renderPortfolioSummary() {
   const { ownedCount, listedCount, readyToListCount } = getUserListingStats();
   elements.ownedCount.textContent = ownedCount.toLocaleString();
