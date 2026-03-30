@@ -545,6 +545,7 @@ async function fetchUserNFTs() {
     state.userNFTs = [];
     elements.listed.textContent = '0';
     elements.portfolioDetail.textContent = 'Connect a wallet to view your holdings';
+    renderPortfolioSummary();
     renderNFTList();
     return;
   }
@@ -558,12 +559,14 @@ async function fetchUserNFTs() {
     elements.listed.textContent = state.userNFTs.length.toLocaleString();
     elements.portfolioDetail.textContent =
       state.userNFTs.length === 0 ? 'No NFTs in this wallet yet' : 'Ready to list directly from portfolio';
+    renderPortfolioSummary();
     renderNFTList();
   } catch (error) {
     console.error('Failed to fetch user NFTs:', error);
     state.userNFTs = [];
     elements.listed.textContent = '0';
     elements.portfolioDetail.textContent = 'Portfolio read failed';
+    renderPortfolioSummary();
     renderNFTList();
   }
 }
@@ -821,6 +824,7 @@ function disconnectWallet() {
   state.userAddress = null;
   state.userNFTs = [];
   setWalletSignals();
+  renderPortfolioSummary();
   renderNFTList();
   renderMarketListings();
   addActivity('Wallet', 'Wallet disconnected.');
