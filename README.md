@@ -1,14 +1,16 @@
-# Simple NFT Marketplace
+# Simple NFT Mint Studio
 
-A minimal NFT marketplace on the Stacks blockchain with minting, listing, buying, and selling functionality.
+A polished Stacks mainnet desk for minting Simple NFTs, watching live marketplace activity, and operating listings with fee-aware pricing guidance.
 
 ## Features
 
--  Simple NFT with sequential IDs
+-  Live mint, list, buy, and cancel flows for the Simple NFT collection
+-  Professional dashboard theme with responsive card-based layout
+-  Wallet desk with connection status, sync cadence, and portfolio inventory
+-  Live market pulse with floor, average ask, and seller exposure
+-  Fee-aware price lab for modeling seller net and floor positioning
+-  Browser-stored activity history and UI preferences
 -  Low fees: Mint (0.001 STX), List (0.0013 STX), Sale (0.0013 STX)
--  Built-in marketplace for listing and buying NFTs
--  Wallet connection via browser extensions (Leather, Xverse)
--  Vite-powered frontend
 
 
 ## Project Structure
