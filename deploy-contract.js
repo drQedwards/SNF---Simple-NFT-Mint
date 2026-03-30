@@ -25,6 +25,14 @@ const CONFIG = {
   DEVNET_API_URL: process.env.DEVNET_API_URL || 'http://127.0.0.1:3999',
   MNEMONIC: process.env.STACKS_MNEMONIC
 };
+const SUPPORTED_NETWORKS = new Set(['mainnet', 'testnet', 'devnet']);
+
+function validateConfig() {
+  if (!SUPPORTED_NETWORKS.has(CONFIG.NETWORK)) {
+    console.error(`Unsupported NETWORK "${CONFIG.NETWORK}". Use one of: mainnet, testnet, devnet.`);
+    process.exit(1);
+  }
+}
 
 function getNetwork() {
   if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
@@ -32,10 +40,20 @@ function getNetwork() {
   return STACKS_TESTNET;
 }
 
+function getTransactionVersion() {
+  return CONFIG.NETWORK === 'mainnet' ? 0x16 : 0x1a;
+}
+
 function getApiUrl() {
   if (CONFIG.NETWORK === 'mainnet') return 'https://api.mainnet.hiro.so';
   if (CONFIG.NETWORK === 'devnet') return CONFIG.DEVNET_API_URL;
   return 'https://api.testnet.hiro.so';
+}
+
+function getExplorerUrl(txId) {
+  if (CONFIG.NETWORK === 'mainnet') return `https://explorer.hiro.so/txid/${txId}`;
+  if (CONFIG.NETWORK === 'devnet') return '(Devnet transaction: open your local Stacks API explorer)';
+  return `https://explorer.hiro.so/txid/${txId}?chain=testnet`;
 }
 
 async function getAccountNonce(address) {
@@ -47,6 +65,7 @@ async function getAccountNonce(address) {
 }
 
 async function main() {
+  validateConfig();
   console.log('=== Simple NFT Contract Deployment ===\n');
   console.log(`Network: ${CONFIG.NETWORK}`);
 
@@ -65,7 +84,7 @@ async function main() {
   const privateKey = account.stxPrivateKey;
   const senderAddress = getStxAddress({
     account,
-    transactionVersion: CONFIG.NETWORK === 'mainnet' ? 0x16 : 0x1a // Mainnet = 0x16, Testnet = 0x1a
+    transactionVersion: getTransactionVersion()
   });
   
   console.log(`Deployer: ${senderAddress}`);
@@ -130,12 +149,7 @@ async function main() {
   console.log('✅ Contract deployment submitted!\n');
   console.log(`Transaction ID: ${txId}`);
   
-  const explorerUrl =
-    CONFIG.NETWORK === 'mainnet'
-      ? `https://explorer.hiro.so/txid/${txId}`
-      : CONFIG.NETWORK === 'devnet'
-        ? '(Devnet transaction: open your local Stacks API explorer)'
-        : `https://explorer.hiro.so/txid/${txId}?chain=testnet`;
+  const explorerUrl = getExplorerUrl(txId);
   
   console.log(`Explorer: ${explorerUrl}\n`);
   
