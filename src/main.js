@@ -368,6 +368,17 @@ function renderPortfolioSummary() {
   elements.readyToListCount.textContent = readyToListCount.toLocaleString();
 }
 
+function renderMarketPulse() {
+  if (!state.marketInsights?.bestAskMicroStx) {
+    elements.marketPulse.textContent = 'Waiting for listings';
+    elements.marketPulseDetail.textContent = 'Refresh to generate a live floor and pricing read.';
+    return;
+  }
+
+  elements.marketPulse.textContent = `Floor ${formatStxFromMicro(state.marketInsights.bestAskMicroStx)}`;
+  elements.marketPulseDetail.textContent = `${state.marketListings.length.toLocaleString()} active listings from ${state.marketInsights.sellers.toLocaleString()} sellers in the scan window.`;
+}
+
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
