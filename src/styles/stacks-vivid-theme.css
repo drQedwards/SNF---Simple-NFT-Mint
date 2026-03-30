@@ -749,6 +749,10 @@ h1 {
     var(--surface-elevated);
 }
 
+.price-actions .btn-primary {
+  min-width: 180px;
+}
+
 .activity-feed {
   display: grid;
   gap: 10px;
