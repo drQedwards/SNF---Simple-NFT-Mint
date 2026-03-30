@@ -819,12 +819,12 @@ h1 {
   color: #08111f;
   font-weight: 700;
   background: linear-gradient(135deg, var(--accent-2), color-mix(in oklab, var(--accent-3), white 8%));
-  box-shadow: 0 14px 28px color-mix(in oklab, var(--accent-2), transparent 78%);
+  box-shadow: 0 16px 32px color-mix(in oklab, var(--accent-2), transparent 74%);
 }
 
 .btn-secondary {
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
