@@ -7,7 +7,20 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('@reown') || id.includes('@walletconnect')) {
+            return 'wallet-vendors';
+          }
+
+          if (id.includes('@stacks') || id.includes('@wagmi') || id.includes('viem')) {
+            return 'chain-vendors';
+          }
+        }
+      }
+    }
   },
   define: {
     // Polyfill for Node.js globals needed by some Stacks packages
