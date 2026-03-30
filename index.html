@@ -335,6 +335,36 @@
           </ul>
         </section>
 
+        <section class="panel reveal pricing-panel">
+          <div class="panel-head">
+            <p class="eyebrow">Price Lab</p>
+            <h3>Fee-aware listing model</h3>
+          </div>
+
+          <div class="price-lab">
+            <label class="portfolio-filter" for="price-lab-input">
+              <span>Target list price (STX)</span>
+              <input id="price-lab-input" type="number" min="0.0014" step="0.0001" value="0.01" />
+            </label>
+
+            <div class="mint-summary">
+              <div class="mini-stat">
+                <span class="mini-label">Estimated seller net</span>
+                <strong id="estimated-net">--</strong>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Market stance</span>
+                <strong id="price-lab-stance">Waiting for listings</strong>
+              </div>
+            </div>
+
+            <div class="price-actions">
+              <button id="match-floor-btn" class="btn btn-secondary" type="button">Match Floor</button>
+              <button id="undercut-floor-btn" class="btn btn-secondary" type="button">Undercut Floor</button>
+            </div>
+          </div>
+        </section>
+
         <section class="panel reveal fee-card">
           <div class="panel-head">
             <p class="eyebrow">Fee Signals</p>
