@@ -1,19 +1,10 @@
-# clarinet.toml for drQedwards/SNF---Simple-NFT-Mint
-# Generated: 2026-03-30
-# Notes:
-# - Update the [contracts] entries to match the actual .clar filenames in your contracts/ directory.
-# - The deployer below is the address you provided.
-# - The testnet URL is set to the Hiro platform endpoint you supplied.
-
 [project]
 name = "SNF---Simple-NFT-Mint"
 description = "A minimal NFT minting platform on the Stacks blockchain (project is in Alpha mainnet - possible modification in the offing)"
 
 [contracts]
-# Replace these with your real contract filenames and paths
-snf_mint = "contracts/snf-mint.clar"
-nft = "contracts/nft.clar"
-utils = "contracts/utils.clar"
+simple_nft_v3 = "contracts/simple-nft-v3.clar"
+nft_marketplace = "contracts/nft-marketplace.clar"
 
 [accounts]
 # Deployer address (provided)
@@ -31,8 +22,7 @@ miner = "deployer"
 timeout = 30
 
 [network.testnet]
-# Using the Hiro extension endpoint you provided
-url = "https://api.platform.hiro.so/v1/ext/674bd738dc435be3fc080008b357f27b/stacks-blockchain-api"
+url = "https://api.testnet.hiro.so"
 
 [network.mainnet]
 url = "https://stacks-node-api.mainnet.stacks.co"

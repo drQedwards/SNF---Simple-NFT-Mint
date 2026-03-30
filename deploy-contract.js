@@ -20,7 +20,8 @@ const __dirname = dirname(__filename);
 // Configuration
 const CONFIG = {
   NETWORK: process.env.NETWORK || 'mainnet',
-  CONTRACT_NAME: 'simple-nft',
+  CONTRACT_NAME: process.env.CONTRACT_NAME || 'simple-nft-v3',
+  CONTRACT_FILE: process.env.CONTRACT_FILE || 'simple-nft-v3.clar',
   MNEMONIC: process.env.STACKS_MNEMONIC
 };
 
@@ -63,9 +64,10 @@ async function main() {
   console.log(`Deployer: ${senderAddress}`);
   
   // Read contract source
-  const contractPath = join(__dirname, 'contracts', 'simple-nft.clar');
+  const contractPath = join(__dirname, 'contracts', CONFIG.CONTRACT_FILE);
   const contractSource = readFileSync(contractPath, 'utf8');
   console.log(`Contract: ${CONFIG.CONTRACT_NAME}`);
+  console.log(`Source file: ${CONFIG.CONTRACT_FILE}`);
   console.log(`Contract size: ${contractSource.length} bytes\n`);
   
   // Get nonce
