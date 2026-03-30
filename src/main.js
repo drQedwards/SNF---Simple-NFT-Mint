@@ -1195,6 +1195,12 @@ function bindEvents() {
     renderPriceLab();
     savePreferences(getPreferences());
   });
+  elements.applyPriceLabBtn?.addEventListener('click', () => {
+    if (!elements.priceLabInput?.value) return;
+    elements.defaultListPrice.value = elements.priceLabInput.value;
+    savePreferences(getPreferences());
+    showStatus('Default listing price updated from Price Lab.', 'success');
+  });
   elements.autoRefresh?.addEventListener('change', (event) => {
     const enabled = Boolean(event.target.checked);
     setAutoRefresh(enabled);
