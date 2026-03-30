@@ -442,6 +442,22 @@ function renderMintDesk() {
   elements.mintUsdEstimate.textContent = `${formatStxFromMicro(CONFIG.MINT_PRICE)} | ${formatUsd(mintUsd)}`;
 }
 
+function renderMarketStrategy() {
+  if (!state.marketInsights?.bestAskMicroStx) {
+    elements.listingStrategy.textContent = 'Waiting for market floor';
+    elements.recommendedListPrice.textContent = 'Waiting for floor';
+    elements.coverageNote.textContent = 'Waiting for scan window';
+    return;
+  }
+
+  const floor = microToStx(state.marketInsights.bestAskMicroStx);
+  const suggested = Math.max(floor - 0.0005, 0.0014);
+  elements.listingStrategy.textContent =
+    state.marketInsights.userListings > 0 ? 'You already have active exposure in market' : 'Opportunity to enter near current floor';
+  elements.recommendedListPrice.textContent = formatStxValue(suggested);
+  elements.coverageNote.textContent = `${state.marketListings.length.toLocaleString()} listings scanned across ${CONFIG.MARKET_SCAN_LIMIT} recent tokens`;
+}
+
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
