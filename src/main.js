@@ -361,6 +361,13 @@ function updateSyncStatus(message, detail) {
   elements.dashboardSyncDetail.textContent = detail;
 }
 
+function renderPortfolioSummary() {
+  const { ownedCount, listedCount, readyToListCount } = getUserListingStats();
+  elements.ownedCount.textContent = ownedCount.toLocaleString();
+  elements.ownedListedCount.textContent = listedCount.toLocaleString();
+  elements.readyToListCount.textContent = readyToListCount.toLocaleString();
+}
+
 function updateMintProgress(mintedCount) {
   const safe = Math.max(0, Number(mintedCount) || 0);
   const ratio = Math.min(100, (safe / CONFIG.MINT_CAP) * 100);
