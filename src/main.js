@@ -988,7 +988,7 @@ function getDefaultPriceMicroStx() {
   const raw = elements.defaultListPrice?.value;
   const parsed = Number.parseFloat(raw || '');
   if (!Number.isFinite(parsed)) return null;
-  return Math.floor(parsed * 1_000_000);
+  return stxToMicro(parsed);
 }
 
 function validateListPrice(priceMicroStx) {
@@ -1048,7 +1048,7 @@ function listNFT(tokenId) {
     if (!promptValue) return;
 
     const parsed = Number.parseFloat(promptValue);
-    priceInMicroStx = Math.floor(parsed * 1_000_000);
+    priceInMicroStx = stxToMicro(parsed);
     if (!validateListPrice(priceInMicroStx)) return;
     elements.defaultListPrice.value = parsed.toFixed(4);
   }
