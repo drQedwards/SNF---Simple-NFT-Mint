@@ -16,14 +16,17 @@ A polished Stacks mainnet desk for minting Simple NFTs, watching live marketplac
 ## Project Structure
 
 ```
-simple-nft-v2/
+SNF---Simple-NFT-Mint/
 ├── contracts/
-│   ├── simple-nft-v3.clar     # NFT contract (SIP-009)
-│   └── nft-marketplace.clar   # Marketplace contract
+│   ├── simple-nft-v4.clar          # NFT contract used by the dashboard
+│   └── nft-marketplace-v2.clar     # Marketplace contract used for listings and sales
 ├── src/
-│   └── main.js                # Frontend application
-├── index.html                 # Main HTML file
-├── vite.config.js             # Vite configuration
+│   ├── main.js                     # Frontend logic, wallet flows, and live data reads
+│   └── styles/stacks-vivid-theme.css
+├── index.html                      # Studio shell and dashboard structure
+├── multi-wallet-mint.js            # Bulk minting helper for generated wallets
+├── multi-wallet-marketplace.js     # Bulk marketplace helper
+├── vite.config.js
 └── package.json
 ```
 
