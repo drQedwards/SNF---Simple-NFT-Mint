@@ -1,7 +1,7 @@
 ;; NFT Marketplace Contract
 ;; Allows listing, buying, and selling NFTs
 ;; Fees: List = 0.0013 STX, Buy = 0.0013 STX (included in price)
-;; Contract Owner: SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97
+;; Contract Owner: SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8
 
 ;; Constants
 (define-constant CONTRACT_OWNER tx-sender)
@@ -35,7 +35,7 @@
 (define-data-var total-listings uint u0)
 
 ;; NFT Contract reference
-(define-constant NFT_CONTRACT 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97.simple-nft-v3)
+(define-constant NFT_CONTRACT 'SPDQ03RC9J9T1GGJ2CGGMP1HZ9W0NYPFPH43BEP8.simple-nft-v3)
 
 ;; Read-only functions
 
