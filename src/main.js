@@ -598,6 +598,8 @@ async function fetchStxPrice() {
     }
 
     elements.stxPrice.textContent = `$${usd.toFixed(3)}`;
+    state.stxQuote = usd;
+    renderMintDesk();
     if (typeof change === 'number') {
       elements.stxPriceUpdated.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% (24h)`;
     } else {
@@ -609,8 +611,10 @@ async function fetchStxPrice() {
     }
   } catch (error) {
     console.error('Failed to fetch STX quote:', error);
+    state.stxQuote = null;
     elements.stxPrice.textContent = '--';
     elements.stxPriceUpdated.textContent = 'Quote unavailable';
+    renderMintDesk();
   }
 }
 
@@ -1154,6 +1158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   bindEvents();
   renderActivityFeed();
   setWalletSignals();
+  renderMintDesk();
   renderNFTList();
   renderPriceLab();
   renderMarketListings();
