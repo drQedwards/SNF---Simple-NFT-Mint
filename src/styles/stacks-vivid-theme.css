@@ -454,7 +454,7 @@ h1 {
 }
 
 .metric-card {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)), var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 16px;
@@ -653,7 +653,9 @@ h1 {
   padding: 16px;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.04);
+  background:
+    radial-gradient(circle at top right, color-mix(in oklab, var(--accent-4), transparent 82%), transparent 48%),
+    rgba(255, 255, 255, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
