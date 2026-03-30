@@ -89,6 +89,20 @@ npm run build
 npm run preview
 ```
 
+## Fire/CI Build + Contract Deploy
+
+If you want CI to build the frontend and then deploy contracts in one command:
+
+```bash
+STACKS_MNEMONIC="..." NETWORK=mainnet npm run build:fire
+```
+
+For local devnet deploys:
+
+```bash
+NETWORK=devnet DEVNET_API_URL=http://127.0.0.1:3999 npm run deploy:contracts
+```
+
 ## License
 
 ISC

@@ -3,14 +3,15 @@ import './styles/stacks-vivid-theme.css';
 import { createAppKit } from '@reown/appkit';
 import { AppConfig, UserSession, showConnect, openContractCall } from '@stacks/connect';
 import { deserializeCV, cvToValue, uintCV } from '@stacks/transactions';
-import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
+import { STACKS_DEVNET, STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 const CONFIG = {
   NFT_CONTRACT_ADDRESS: 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97',
   NFT_CONTRACT_NAME: 'simple-nft-v4',
   MARKETPLACE_CONTRACT_ADDRESS: 'SP31G2FZ5JN87BATZMP4ZRYE5F7WZQDNEXJ7G7X97',
   MARKETPLACE_CONTRACT_NAME: 'nft-marketplace-v2',
-  NETWORK: 'mainnet',
+  NETWORK: import.meta.env.VITE_STACKS_NETWORK || 'mainnet',
+  DEVNET_API_URL: import.meta.env.VITE_DEVNET_API_URL || 'http://127.0.0.1:3999',
   MINT_PRICE: 1000,
   LIST_FEE: 1300,
   APP_NAME: 'Simple NFT Marketplace',
@@ -82,11 +83,23 @@ function initAppKit() {
 }
 
 function getApiUrl() {
-  return CONFIG.NETWORK === 'mainnet' ? 'https://api.mainnet.hiro.so' : 'https://api.testnet.hiro.so';
+  if (CONFIG.NETWORK === 'mainnet') return 'https://api.mainnet.hiro.so';
+  if (CONFIG.NETWORK === 'devnet') return CONFIG.DEVNET_API_URL;
+  return 'https://api.testnet.hiro.so';
 }
 
 function getStacksNetwork() {
-  return CONFIG.NETWORK === 'mainnet' ? STACKS_MAINNET : STACKS_TESTNET;
+  if (CONFIG.NETWORK === 'mainnet') return STACKS_MAINNET;
+  if (CONFIG.NETWORK === 'devnet') {
+    return {
+      ...STACKS_DEVNET,
+      url: CONFIG.DEVNET_API_URL,
+      client: STACKS_DEVNET.client
+        ? { ...STACKS_DEVNET.client, baseUrl: CONFIG.DEVNET_API_URL }
+        : STACKS_DEVNET.client,
+    };
+  }
+  return STACKS_TESTNET;
 }
 
 /** Formats address for PR 0 */

@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:fire": "vite build && node deploy-contract.js",
     "preview": "vite preview",
+    "deploy:contracts": "node deploy-contract.js",
     "mint": "node mint-script.js"
   },
   "keywords": [
